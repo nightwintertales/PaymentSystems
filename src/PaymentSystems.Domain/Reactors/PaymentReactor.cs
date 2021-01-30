@@ -1,9 +1,8 @@
-namespace PaymentSystems.WebAPI.Projections
+namespace PaymentSystems.Domain.Reactors
 {
-    public class AccountOverviewProjection : Projection
+    public class PaymentReactor : IEventHandler
     {
-        
-        public override async Task Handle(object e)
+        Task HandleEvent(object @event);
         {
                 case V1.TransactionInitiated x:
                    // Create an entry in Mongo
@@ -15,11 +14,7 @@ namespace PaymentSystems.WebAPI.Projections
                 case V1.TransactionBooked x:
                 // Update status
                     break;
-
-              
-
-               
         }
-        
     }
 }
+
