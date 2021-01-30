@@ -13,11 +13,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/Users/tronlegacy/projects/PaymentSystems/PaymentSystems.FrameWork/PaymentSystems.FrameWork.csproj",
+      "projectUniqueName": "/Users/tronlegacy/projects/PaymentSystems/src/PaymentSystems.FrameWork/PaymentSystems.FrameWork.csproj",
       "projectName": "PaymentSystems.FrameWork",
-      "projectPath": "/Users/tronlegacy/projects/PaymentSystems/PaymentSystems.FrameWork/PaymentSystems.FrameWork.csproj",
+      "projectPath": "/Users/tronlegacy/projects/PaymentSystems/src/PaymentSystems.FrameWork/PaymentSystems.FrameWork.csproj",
       "packagesPath": "/Users/tronlegacy/.nuget/packages/",
-      "outputPath": "/Users/tronlegacy/projects/PaymentSystems/PaymentSystems.FrameWork/obj/",
+      "outputPath": "/Users/tronlegacy/projects/PaymentSystems/src/PaymentSystems.FrameWork/obj/",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "/Users/tronlegacy/.nuget/NuGet/NuGet.Config"

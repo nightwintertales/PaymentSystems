@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "G6e59zCCZgVkXC9Emx92BryjFoBHxTs9TQDoOm36Y3fxpzx8/CiBoKDTvut9HZjyzUrjxlVLB30nFENP1U3fOQ==",
+  "dgSpecHash": "oVz5sYoh50//r8kH+4lb5Nf1maFAwI7ngOCgGO7YFZOMa5E2LoQaPoIV3RfC3lTdna230fpnNwuy79cwe7G5og==",
   "success": true,
-  "projectFilePath": "/Users/tronlegacy/projects/PaymentSystems/PaymentSystems.Infrastructure/PaymentSystems.Infrastructure.csproj",
+  "projectFilePath": "/Users/tronlegacy/projects/PaymentSystems/src/PaymentSystems.Infrastructure/PaymentSystems.Infrastructure.csproj",
   "expectedPackageFiles": [
     "/Users/tronlegacy/.nuget/packages/eventstore.client/20.10.0/eventstore.client.20.10.0.nupkg.sha512",
     "/Users/tronlegacy/.nuget/packages/microsoft.netcore.platforms/2.1.0/microsoft.netcore.platforms.2.1.0.nupkg.sha512",

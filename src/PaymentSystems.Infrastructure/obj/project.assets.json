@@ -3194,11 +3194,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/Users/tronlegacy/projects/PaymentSystems/PaymentSystems.Infrastructure/PaymentSystems.Infrastructure.csproj",
+      "projectUniqueName": "/Users/tronlegacy/projects/PaymentSystems/src/PaymentSystems.Infrastructure/PaymentSystems.Infrastructure.csproj",
       "projectName": "PaymentSystems.Infrastructure",
-      "projectPath": "/Users/tronlegacy/projects/PaymentSystems/PaymentSystems.Infrastructure/PaymentSystems.Infrastructure.csproj",
+      "projectPath": "/Users/tronlegacy/projects/PaymentSystems/src/PaymentSystems.Infrastructure/PaymentSystems.Infrastructure.csproj",
       "packagesPath": "/Users/tronlegacy/.nuget/packages/",
-      "outputPath": "/Users/tronlegacy/projects/PaymentSystems/PaymentSystems.Infrastructure/obj/",
+      "outputPath": "/Users/tronlegacy/projects/PaymentSystems/src/PaymentSystems.Infrastructure/obj/",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "/Users/tronlegacy/.nuget/NuGet/NuGet.Config"

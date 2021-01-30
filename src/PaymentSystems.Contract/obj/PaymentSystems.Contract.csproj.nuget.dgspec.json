@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "/Users/tronlegacy/projects/PaymentSystems/PaymentSystems.Contract/PaymentSystems.Contract.csproj": {}
+    "/Users/tronlegacy/projects/PaymentSystems/src/PaymentSystems.Contract/PaymentSystems.Contract.csproj": {}
   },
   "projects": {
-    "/Users/tronlegacy/projects/PaymentSystems/PaymentSystems.Contract/PaymentSystems.Contract.csproj": {
+    "/Users/tronlegacy/projects/PaymentSystems/src/PaymentSystems.Contract/PaymentSystems.Contract.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/Users/tronlegacy/projects/PaymentSystems/PaymentSystems.Contract/PaymentSystems.Contract.csproj",
+        "projectUniqueName": "/Users/tronlegacy/projects/PaymentSystems/src/PaymentSystems.Contract/PaymentSystems.Contract.csproj",
         "projectName": "PaymentSystems.Contract",
-        "projectPath": "/Users/tronlegacy/projects/PaymentSystems/PaymentSystems.Contract/PaymentSystems.Contract.csproj",
+        "projectPath": "/Users/tronlegacy/projects/PaymentSystems/src/PaymentSystems.Contract/PaymentSystems.Contract.csproj",
         "packagesPath": "/Users/tronlegacy/.nuget/packages/",
-        "outputPath": "/Users/tronlegacy/projects/PaymentSystems/PaymentSystems.Contract/obj/",
+        "outputPath": "/Users/tronlegacy/projects/PaymentSystems/src/PaymentSystems.Contract/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "/Users/tronlegacy/.nuget/NuGet/NuGet.Config"

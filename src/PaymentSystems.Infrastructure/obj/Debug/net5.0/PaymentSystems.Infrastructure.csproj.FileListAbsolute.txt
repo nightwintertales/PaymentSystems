@@ -3,3 +3,8 @@
 /Users/tronlegacy/projects/PaymentSystems/PaymentSystems.Infrastructure/obj/Debug/net5.0/PaymentSystems.Infrastructure.AssemblyInfoInputs.cache
 /Users/tronlegacy/projects/PaymentSystems/PaymentSystems.Infrastructure/obj/Debug/net5.0/PaymentSystems.Infrastructure.AssemblyInfo.cs
 /Users/tronlegacy/projects/PaymentSystems/PaymentSystems.Infrastructure/obj/Debug/net5.0/PaymentSystems.Infrastructure.csproj.CoreCompileInputs.cache
+/Users/tronlegacy/projects/PaymentSystems/src/PaymentSystems.Infrastructure/obj/Debug/net5.0/PaymentSystems.Infrastructure.csprojAssemblyReference.cache
+/Users/tronlegacy/projects/PaymentSystems/src/PaymentSystems.Infrastructure/obj/Debug/net5.0/PaymentSystems.Infrastructure.GeneratedMSBuildEditorConfig.editorconfig
+/Users/tronlegacy/projects/PaymentSystems/src/PaymentSystems.Infrastructure/obj/Debug/net5.0/PaymentSystems.Infrastructure.AssemblyInfoInputs.cache
+/Users/tronlegacy/projects/PaymentSystems/src/PaymentSystems.Infrastructure/obj/Debug/net5.0/PaymentSystems.Infrastructure.AssemblyInfo.cs
+/Users/tronlegacy/projects/PaymentSystems/src/PaymentSystems.Infrastructure/obj/Debug/net5.0/PaymentSystems.Infrastructure.csproj.CoreCompileInputs.cache

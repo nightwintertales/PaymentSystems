@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "NTWvMfJYei28+A5C5RqVYNRr6xqxD+JxneX+njcdw0q1ufSXhwV6VncFhpV6s3ycGJL7O5GdjlXgToLEBH/7Lg==",
+  "dgSpecHash": "4ve7dQHqKli+BMZGz0qcUWnHvguUsVGowAL4BEFQqzxhSq28Xe8Y2Kgh9gUKPwWy4Yw8VdJMyCvPzT8U0fNyOA==",
   "success": true,
-  "projectFilePath": "/Users/tronlegacy/projects/PaymentSystems/PaymentSystems.FrameWork/PaymentSystems.FrameWork.csproj",
+  "projectFilePath": "/Users/tronlegacy/projects/PaymentSystems/src/PaymentSystems.FrameWork/PaymentSystems.FrameWork.csproj",
   "expectedPackageFiles": [],
   "logs": []
 }
