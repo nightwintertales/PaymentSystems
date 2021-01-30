@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "FAD77ApgOyQoxJ0tUHnfvp3FWw776fQx+QsDd5/Mlq4PbRtLHZ/J/65T867jqAXLOtKMrC2ioQUMrclTbCop5g==",
+  "dgSpecHash": "6YfdIyFo0wti+iZ25kCsjHb24Q5pho32AkGkZjkWE/dQDSuMVpPWu6oqbtetzTuIuXtwC7CoxUd+nZw+ugAQMQ==",
   "success": true,
-  "projectFilePath": "/Users/tronlegacy/projects/PaymentSystems/src/PaymentSystems.Contract/PaymentSystems.Contract.csproj",
+  "projectFilePath": "/Users/alexey/dev/ubiquitous/veronica/paymentsystems/src/PaymentSystems.Contract/PaymentSystems.Contract.csproj",
   "expectedPackageFiles": [],
   "logs": []
 }

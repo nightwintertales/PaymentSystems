@@ -8,19 +8,23 @@
     "net5.0": []
   },
   "packageFolders": {
-    "/Users/tronlegacy/.nuget/packages/": {}
+    "/Users/alexey/.nuget/packages/": {},
+    "/usr/local/share/dotnet/sdk/NuGetFallbackFolder": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/Users/tronlegacy/projects/PaymentSystems/src/PaymentSystems.Contract/PaymentSystems.Contract.csproj",
+      "projectUniqueName": "/Users/alexey/dev/ubiquitous/veronica/paymentsystems/src/PaymentSystems.Contract/PaymentSystems.Contract.csproj",
       "projectName": "PaymentSystems.Contract",
-      "projectPath": "/Users/tronlegacy/projects/PaymentSystems/src/PaymentSystems.Contract/PaymentSystems.Contract.csproj",
-      "packagesPath": "/Users/tronlegacy/.nuget/packages/",
-      "outputPath": "/Users/tronlegacy/projects/PaymentSystems/src/PaymentSystems.Contract/obj/",
+      "projectPath": "/Users/alexey/dev/ubiquitous/veronica/paymentsystems/src/PaymentSystems.Contract/PaymentSystems.Contract.csproj",
+      "packagesPath": "/Users/alexey/.nuget/packages/",
+      "outputPath": "/Users/alexey/dev/ubiquitous/veronica/paymentsystems/src/PaymentSystems.Contract/obj/",
       "projectStyle": "PackageReference",
+      "fallbackFolders": [
+        "/usr/local/share/dotnet/sdk/NuGetFallbackFolder"
+      ],
       "configFilePaths": [
-        "/Users/tronlegacy/.nuget/NuGet/NuGet.Config"
+        "/Users/alexey/.nuget/NuGet/NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "net5.0"
