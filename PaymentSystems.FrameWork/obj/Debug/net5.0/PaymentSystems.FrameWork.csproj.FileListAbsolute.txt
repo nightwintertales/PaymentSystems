@@ -1,0 +1,12 @@
+/Users/tronlegacy/projects/PaymentSystems/PaymentSystems.FrameWork/obj/Debug/net5.0/PaymentSystems.FrameWork.csprojAssemblyReference.cache
+/Users/tronlegacy/projects/PaymentSystems/PaymentSystems.FrameWork/obj/Debug/net5.0/PaymentSystems.FrameWork.GeneratedMSBuildEditorConfig.editorconfig
+/Users/tronlegacy/projects/PaymentSystems/PaymentSystems.FrameWork/obj/Debug/net5.0/PaymentSystems.FrameWork.AssemblyInfoInputs.cache
+/Users/tronlegacy/projects/PaymentSystems/PaymentSystems.FrameWork/obj/Debug/net5.0/PaymentSystems.FrameWork.AssemblyInfo.cs
+/Users/tronlegacy/projects/PaymentSystems/PaymentSystems.FrameWork/obj/Debug/net5.0/PaymentSystems.FrameWork.csproj.CoreCompileInputs.cache
+/Users/tronlegacy/projects/PaymentSystems/PaymentSystems.FrameWork/bin/Debug/net5.0/PaymentSystems.FrameWork.deps.json
+/Users/tronlegacy/projects/PaymentSystems/PaymentSystems.FrameWork/bin/Debug/net5.0/PaymentSystems.FrameWork.dll
+/Users/tronlegacy/projects/PaymentSystems/PaymentSystems.FrameWork/bin/Debug/net5.0/ref/PaymentSystems.FrameWork.dll
+/Users/tronlegacy/projects/PaymentSystems/PaymentSystems.FrameWork/bin/Debug/net5.0/PaymentSystems.FrameWork.pdb
+/Users/tronlegacy/projects/PaymentSystems/PaymentSystems.FrameWork/obj/Debug/net5.0/PaymentSystems.FrameWork.dll
+/Users/tronlegacy/projects/PaymentSystems/PaymentSystems.FrameWork/obj/Debug/net5.0/ref/PaymentSystems.FrameWork.dll
+/Users/tronlegacy/projects/PaymentSystems/PaymentSystems.FrameWork/obj/Debug/net5.0/PaymentSystems.FrameWork.pdb
