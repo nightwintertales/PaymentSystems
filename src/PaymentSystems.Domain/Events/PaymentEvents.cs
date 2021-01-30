@@ -8,18 +8,21 @@ namespace PaymentSystems.Domain.Events
             {
                 public string PaymentId {get;set;}
                 public decimal Ammount {get;set;}
+                public string Name {get;set;}
             }
 
             public class PaymentCancelled
             {
                  public string PaymentId {get;set;}
                  public decimal Ammount {get;set;}
+                 public string Name {get;set;}
             }
 
             public class PaymentApproved
             {
                  public string PaymentId {get;set;}
                  public decimal Ammount {get;set;}
+                 public string Name {get;set;}
             }
 
             //Bank
@@ -34,6 +37,7 @@ namespace PaymentSystems.Domain.Events
             {
                  public string PaymentId {get;set;}
                  public decimal Ammount {get;set;}
+                 public string Name {get;set;}
             }
 
 
@@ -43,6 +47,7 @@ namespace PaymentSystems.Domain.Events
             {
                  public string PaymentId {get;set;}
                  public decimal Ammount {get;set;}
+                 public string Name {get;set;}
             }
 
             public class PaymentFailed 
