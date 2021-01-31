@@ -1,6 +1,9 @@
+using System;
+using PaymentSystems.FrameWork;
+
 namespace PaymentSystems.Domain.Accounts
 {
-    public class AccountId : Value<AccountId>
+    public record AccountId
     {
         public Guid Value { get; }
 
@@ -15,7 +18,7 @@ namespace PaymentSystems.Domain.Accounts
         public static implicit operator Guid(AccountId self) => self.Value;
 
         public static implicit operator AccountId(string value)
-            => new AccountId(Guid.Parse(value));
+            => new(Guid.Parse(value));
 
         public override string ToString() => Value.ToString();
     }

@@ -2,12 +2,11 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-
+using PaymentSystems.FrameWork;
 
 namespace PaymentSystems.Domain.Accounts
 {
     public class Account : AggregateRoot<AccountId> {
-    {
         private string _reason;
          private decimal _amount;
          private string _transactionId;

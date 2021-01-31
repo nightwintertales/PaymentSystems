@@ -5,9 +5,6 @@ namespace PaymentSystems.Domain.Payments
     //Value objects to avoid invalid type arguments
     public class Payment
     {
-         private string _reason;
-         private decimal _amount;
-
          public void SubmitPayment(decimal amount)
          {
 
@@ -43,19 +40,5 @@ namespace PaymentSystems.Domain.Payments
 
          }
 
-         protected override void EnsureValidState() { }
-
-        protected override void When(object @event) 
-        {
-            switch (@event) 
-            {
-                case PaymentEvents.V1.PaymentSubmitted e:
-                    
-                    e
-                    
-                    break;
-               
-            }
-        }
     }
 }

@@ -1,3 +1,5 @@
+using System;
+
 namespace PaymentSystems.Domain.Accounts
 {
     public record CustomerDetails {
