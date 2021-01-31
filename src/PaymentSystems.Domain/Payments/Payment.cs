@@ -2,6 +2,7 @@ using PaymentSystems.Domain.Events;
 
 namespace PaymentSystems.Domain.Payments
 {
+    //Value objects to avoid invalid type arguments
     public class Payment
     {
          private string _reason;

@@ -8,6 +8,7 @@ namespace PaymentSystems.Domain.Events
             {
                 public string TransactionId {get;set;}
                 public string PaymentId {get;set;}
+                public string AccountId {get;set;}
                 public decimal Ammount {get;set;}
             }
 
@@ -15,15 +16,8 @@ namespace PaymentSystems.Domain.Events
             {
                  public string TransactionId {get;set;}
                  public string PaymentId {get;set;}
-                public decimal Ammount {get;set;}
-            }
-
-            public class TransactionCancelled
-            {
-                 public string TransactionId {get;set;}
-                 public string PaymentId {get;set;}
+                 public string AccountId {get;set;}
                  public decimal Ammount {get;set;}
-                 public string Reason {get;set}
             }
         }
     }
