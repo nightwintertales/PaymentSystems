@@ -6,23 +6,28 @@ using PaymentSystems.FrameWork;
 
 namespace PaymentSystems.Domain.Accounts
 {
-    public class Account : AggregateRoot<AccountId> {
-        private string _reason;
-         private decimal _amount;
+    public class Account : AggregateRoot<AccountId> 
+    {
+        //Or else use State
+         private string _reason;
+         private decimal _availableBalance;
+         private decimal _availableBalance;
+         private decimal _disposableAmount;
+         private decimal _bookedAmount;
          private string _transactionId;
-         private string _AccountId;
+         private string _accountId;
 
-         public void InitiateTransaction(decimal amount)
+         public void InitiateTransaction(Ammount amount, TransactionId transactionId)
          {
 
          }
 
-         public void BookTransaction(decimal amount, string reason)
+         public void BookTransaction(Ammount amount, TransactionId transactionId, string reason)
          {
 
          }
 
-         public void CancelTransaction(decimal amount)
+         public void OpenAccount(AccountId id)
          {
 
          }

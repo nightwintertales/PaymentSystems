@@ -3,42 +3,30 @@ using PaymentSystems.Domain.Events;
 namespace PaymentSystems.Domain.Payments
 {
     //Value objects to avoid invalid type arguments
-    public class Payment
+    public class Payment : AggregateRoot<PaymentId> 
     {
-         public void SubmitPayment(decimal amount)
+         public void SubmitPayment(PaymentId paymentId, Amount amount, DateTimeOffset  submittedAt)
          {
 
          }
 
-         public void CancelPayment(decimal amount, string reason)
+         public void ApprovePayment(Amount amount)
          {
 
          }
 
-         public void ApprovePayment(decimal amount)
+         public void ExecutePayment(Amount amount)
          {
 
          }
 
-         public void ExecutePayment(decimal amount)
-         {
-
-         }
-
-         public void RegisterPayment(decimal amount)
-         {
-
-         }
-
-         public void ConfirmPayment(decimal amount)
-         {
-
-         }
-
-         public void FailPayment(decimal amount)
-         {
-
-         }
-
+         protected override void When(object @event) 
+        {
+            switch (@event) 
+            {
+            
+               
+            }
+        }
     }
 }
