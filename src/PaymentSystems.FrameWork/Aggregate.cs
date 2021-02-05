@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+
 namespace PaymentSystems.FrameWork
 {
      public abstract class Aggregate<TId, TState> where TId : AggregateId where TState : AggregateState<TId> {
