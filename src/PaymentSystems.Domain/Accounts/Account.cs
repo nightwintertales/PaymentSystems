@@ -17,9 +17,12 @@ namespace PaymentSystems.Domain.Accounts
             Apply(
                 new TransactionInitiated()
                 {
-                            AccountId = accountId.Value,
-                    TransactionId = transactionId.Value
-                  
+                    AccountId = accountId.Value,
+                    TransactionId = transactionId.Value,
+                    BookedAmount = State.AvailableBalance = amount,
+                    //NOT SURE THISIS CORRECT THOUGH - CAn we set event properties by using Aggregate State ?
+                    DisposableAmount = amount,
+                    AvailableBalance = State.AvailableBalance
                 }
             );
         }
@@ -31,18 +34,21 @@ namespace PaymentSystems.Domain.Accounts
                 {
                     
                     AccountId = accountId.Value,
-                    TransactionId = transactionId.Value
+                    TransactionId = transactionId.Value,
+                    BookedAmount = State.AvailableBalance = amount,
+                    //NOT SURE THISIS CORRECT THOUGH - CAn we set event properties by using Aggregate State ?
+                    DisposableAmount = amount,
+                    AvailableBalance = State.AvailableBalance
                 }
             );
          }
 
-         public void OpenAccount(AccountId id)
+         public void OpenAccount(AccountId accountId)
          {
              Apply(
                 new AccountOpened()
                 {
-                    
-                   
+                    AccountId = accountId.Value
                 }
             );
          }
@@ -53,8 +59,8 @@ namespace PaymentSystems.Domain.Accounts
                     new AccountState {
 
                         //d = e.AccountId,
-                        AvailableBalance = 0.0m,
-                        DisposableAmount = 0.0m,
+                        AvailableBalance = 10000m,
+                        TransactionAmount = 0.0m,
                         BookedAmount = 0.0m
                        
                     },
