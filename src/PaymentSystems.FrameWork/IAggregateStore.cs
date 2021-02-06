@@ -18,7 +18,7 @@ namespace PaymentSystems.FrameWork
 
     public class OptimisticConcurrencyException<TState, TId> : Exception where TState : AggregateState<TId> where TId : AggregateId {
         public OptimisticConcurrencyException(TState state)
-            : base($"State version mismatch {typeof(TState).Name}:{state.Id}:{state.Version}") { }
+            : base($"State version mismatch {typeof(TState).Name}:{state.Version}:{state.Version}") { }
     }
 
 }

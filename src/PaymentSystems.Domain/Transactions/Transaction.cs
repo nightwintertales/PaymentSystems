@@ -1,3 +1,4 @@
+/*
 namespace PaymentSystems.Domain.Transactions
 {
     public class Transaction : AggregateRoot<TransactionId> 
@@ -32,3 +33,5 @@ namespace PaymentSystems.Domain.Transactions
          }
     }
 }
+
+*/

@@ -1,3 +1,4 @@
+/*
 using PaymentSystems.Domain.Events;
 
 namespace PaymentSystems.Domain.Payments
@@ -30,3 +31,5 @@ namespace PaymentSystems.Domain.Payments
         }
     }
 }
+
+*/
