@@ -17,11 +17,11 @@ namespace PaymentSystems.FrameWork
         public abstract TState When(object evt);
 
         protected void EnsureExists() {
-            if (State.Version < 0) throw new DomainException($"{GetType().Name} {State.Id} doesn't exist");
+           // if (State.Version < 0) throw new DomainException($"{GetType().Name} {State.Id} doesn't exist");
         }
 
         protected void EnsureDoesntExist() {
-            if (State.Version > -1) throw new DomainException($"{GetType().Name} {State.Id} already exist");
+         //   if (State.Version > -1) throw new DomainException($"{GetType().Name} {State.Id} already exist");
         }
     }
 

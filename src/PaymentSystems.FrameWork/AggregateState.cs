@@ -1,7 +1,6 @@
 namespace PaymentSystems.FrameWork
 {
-    public class AggregateState
-    {
-        
+    public abstract record AggregateState<TId> : Document where TId : AggregateId {
+        public int Version { get; init; } = -1;
     }
 }

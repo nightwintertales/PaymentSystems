@@ -6,41 +6,68 @@ using PaymentSystems.FrameWork;
 
 namespace PaymentSystems.Domain.Accounts
 {
-    public class Account : AggregateRoot<AccountId> 
+    public class Account : Aggregate<AccountId, AccountState> 
     {
-        //Or else use State
-         private string _reason;
-         private decimal _availableBalance;
-         private decimal _availableBalance;
-         private decimal _disposableAmount;
-         private decimal _bookedAmount;
-         private string _transactionId;
-         private string _accountId;
+         public Account() => State = new AccountState();
 
-         public void InitiateTransaction(Ammount amount, TransactionId transactionId)
+         public void InitiateTransaction(Ammount amount, TransactionId transactionId, AccountId accountId)
          {
+            Apply(
+                new TransactionInitiated(
+                            AccountId = accountId.Value,
+                    TransactionId = transactionId.Value
+                  
+                )
+            );
+        }
 
-         }
-
-         public void BookTransaction(Ammount amount, TransactionId transactionId, string reason)
+         public void BookTransaction(Ammount amount, TransactionId transactionId, AccountId accountId)
          {
-
+            Apply(
+                new TransactionBooked(
+                    
+                    AccountId = accountId.Value,
+                    TransactionId = transactionId.Value
+                )
          }
 
          public void OpenAccount(AccountId id)
          {
-
+            Apply(
+                new AccountOpened
+                {
+                    AccountId = id.Value
+                }
          }
 
-        protected override void EnsureValidState() { }
+         public override AccountState When(object evt)
+            => evt switch {
+                AccountOpened e =>
+                    new AccountState {
 
-        protected override void When(object @event) 
-        {
-            switch (@event) 
-            {
-            
-               
-            }
-        }
+                        Id = e.AccountId,
+                        AvailableBalance = 0.0m,
+                        DisposableAmount = 0.0m,
+                        BookedAmount = 0.0m
+                       
+                    },
+                TransactionBooked  e =>
+                    State with {
+                           Id = e.AccountId,
+                        AvailableBalance = 0.0m,
+                        DisposableAmount = 0.0m,
+                        BookedAmount = 0.0m
+                    },
+                DiscountApplied e =>
+                    State with {
+                         Id = e.AccountId,
+                         TransactionId = e.TransactionId,
+                         AvailableBalance = State.AvailableBalance,
+                         DisposableAmount = 0.0m,
+                         BookedAmount = 0.0m
+                    },
+                _ => State
+            };
+
     }
 }
