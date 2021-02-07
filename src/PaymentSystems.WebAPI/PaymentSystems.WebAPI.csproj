@@ -14,6 +14,7 @@
     <ProjectReference Include="..\PaymentSystems.Contract\PaymentSystems.Contract.csproj" />
     <ProjectReference Include="..\PaymentSystems.FrameWork\PaymentSystems.FrameWork.csproj" />
     <ProjectReference Include="..\PaymentSystems.Infrastructure\PaymentSystems.Infrastructure.csproj" />
+    <ProjectReference Include="..\PaymentSystems.Domain\PaymentSystems.Domain.csproj" />
   </ItemGroup>
 
 </Project>

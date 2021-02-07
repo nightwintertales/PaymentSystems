@@ -1,3 +1,5 @@
+using PaymentSystems.Domain.Payments;
+
 namespace PaymentSystems.Domain.Events
 {
     public static class PaymentEvents
@@ -8,6 +10,7 @@ namespace PaymentSystems.Domain.Events
                 public string  PaymentId { get; set; }
                 public decimal Amount {get;set;}
                 public decimal Name   { get; set; }
+                public PaymentStatus Status => PaymentStatus.Submitted;
             }
 
             public class PaymentApproved {
@@ -15,6 +18,7 @@ namespace PaymentSystems.Domain.Events
                 public string  PaymentId { get; set; }
                 public decimal Amount {get;set;}
                 public decimal Name   { get; set; }
+                public PaymentStatus Status => PaymentStatus.Approved;
             }
 
             public class PaymentExecuted {
@@ -22,6 +26,7 @@ namespace PaymentSystems.Domain.Events
                 public string  PaymentId { get; set; }
                 public decimal Amount {get;set;}
                 public decimal Name   { get; set; }
+                public PaymentStatus Status => PaymentStatus.Executed;
             }
         }
     }
