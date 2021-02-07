@@ -3,7 +3,7 @@ using System;
 namespace PaymentSystems.FrameWork
 {
      public abstract class Entity<TId> : IInternalEventHandler
-        where TId : Value<TId>
+        where TId : AggregateId
     {
         private readonly Action<object> _applier;
         

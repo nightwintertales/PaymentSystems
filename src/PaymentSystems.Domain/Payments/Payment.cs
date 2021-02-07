@@ -1,11 +1,6 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using PaymentSystems.FrameWork;
 using PaymentSystems.Domain.Accounts;
 using static PaymentSystems.Domain.Events.PaymentEvents.V1;
-using PaymentSystems.Domain.Transactions;
 
 namespace PaymentSystems.Domain.Payments
 {
@@ -56,21 +51,27 @@ namespace PaymentSystems.Domain.Payments
                 PaymentSubmitted e =>
                     new PaymentState {
 
-                          
-                       
+                        AccountId = e.AccountId,
+                        Amount = e.Amount,
+                        Status = e.Status,
+                        PaymentId = e.PaymentId
                     },
                 PaymentApproved  e => 
                  State = new PaymentState()
                  {
-
+                        AccountId = e.AccountId,
+                        Amount = e.Amount,
+                        Status = e.Status,
+                        PaymentId = e.PaymentId
                  },
                 PaymentExecuted  e => 
                  State = new PaymentState()
                  {
-                     
+                        AccountId = e.AccountId,
+                        Amount = e.Amount,
+                        Status = e.Status,
+                        PaymentId = e.PaymentId
                  }
-              
             };
-
     }
 }
