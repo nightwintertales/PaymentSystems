@@ -6,8 +6,8 @@ namespace PaymentSystems.Domain.Transactions
          private string _reason;
          private decimal _amount;
          private string _transactionId;
-         private string _AccountId;
 
+         private string _AccountId;
          public void InitiateTransaction(TransactionId id, Amount amount, DateTimeOffset  submittedAt)
          {
 

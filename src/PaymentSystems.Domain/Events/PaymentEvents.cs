@@ -29,5 +29,6 @@ namespace PaymentSystems.Domain.Events
                 public PaymentStatus Status => PaymentStatus.Executed;
             }
         }
+        
     }
 }

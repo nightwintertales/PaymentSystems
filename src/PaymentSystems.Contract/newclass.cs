@@ -1,6 +1,6 @@
 namespace PaymentSystems.Contract
 {
-    public class Reads
+    public class newclass
     {
         
     }
