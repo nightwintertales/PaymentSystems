@@ -1,77 +1,68 @@
+using System;
 using PaymentSystems.FrameWork;
 using PaymentSystems.Domain.Accounts;
 using static PaymentSystems.Domain.Events.PaymentEvents.V1;
+using static PaymentSystems.Domain.Shared.Shared;
 
-namespace PaymentSystems.Domain.Payments
-{
+namespace PaymentSystems.Domain.Payments {
     //Consider Payment Status that changes with different events
-    public class Payment : Aggregate<PaymentId, PaymentState> 
-    {
-         public Payment() => State = new PaymentState();
+    public class Payment : Aggregate<PaymentId, PaymentState> {
+        public Payment() => State = new PaymentState();
 
-         public void SubmitPayment(AccountId accountId, PaymentId paymentId, decimal amount)
-         {
+        public void SubmitPayment(AccountId accountId, PaymentId paymentId, Payee payee, decimal amount) {
             Apply(
                 new PaymentSubmitted()
                 {
                     AccountId = accountId.Value,
                     Amount = amount,
-                    PaymentId = paymentId.Value
+                    PaymentId = paymentId.Value,
+                    Payee = new V1.CounterParty(
+                        payee.Name,
+                        new V1.DomesticAccountDetails(payee.Account.SortCode, payee.Account.AccountNumber)
+                    )
                 }
             );
         }
 
-         public void ApprovePayment(decimal amount, AccountId accountId)
-         {
+        public void ApprovePayment(string approvedBy, DateTimeOffset approvedAt) {
+            if (State.Status != PaymentStatus.Submitted) return;
+
             Apply(
-                new PaymentApproved()
+                new PaymentApproved
                 {
-                    AccountId = accountId.Value,
-                    Amount = amount,
-                    PaymentId = State.PaymentId
+                    PaymentId = State.PaymentId,
+                    ApprovedBy = approvedBy,
+                    ApprovedAt = approvedAt
                 }
             );
-         }
+        }
 
-         public void ExecutePayment(decimal amount, AccountId accountId)
-         {
-            Apply(
-                new PaymentExecuted()
-                {
-                    
-                    AccountId = accountId.Value,
-                    Amount = amount,
-                    PaymentId = State.PaymentId
-                }
-            );
-         }
+        public void ExecutePayment(Account account) {
+            if (State.Status == PaymentStatus.Executed) return;
 
-         public override PaymentState When(object evt)
-            => evt switch {
+            if (State.Status != PaymentStatus.Approved)
+                throw new Exception("It's not approved");
+            
+            if (!account.CanExecutePayment(this))
+                Apply(new PaymentDenied(State.PaymentId, "Not enough money"));
+            else
+                Apply(new PaymentExecuted {PaymentId = State.PaymentId});
+        }
+
+        public override PaymentState When(object evt)
+            => evt switch
+            {
                 PaymentSubmitted e =>
-                    new PaymentState {
-
+                    new PaymentState
+                    {
                         AccountId = e.AccountId,
                         Amount = e.Amount,
-                        Status = e.Status,
+                        Status = PaymentStatus.Submitted,
                         PaymentId = e.PaymentId
                     },
-                PaymentApproved  e => 
-                 State = new PaymentState()
-                 {
-                        AccountId = e.AccountId,
-                        Amount = e.Amount,
-                        Status = e.Status,
-                        PaymentId = e.PaymentId
-                 },
-                PaymentExecuted  e => 
-                 State = new PaymentState()
-                 {
-                        AccountId = e.AccountId,
-                        Amount = e.Amount,
-                        Status = e.Status,
-                        PaymentId = e.PaymentId
-                 }
+                PaymentApproved => State = State with {Status = PaymentStatus.Approved},
+                PaymentExecuted => State = State with {Status = PaymentStatus.Executed},
+                _ => State
             };
     }
 }

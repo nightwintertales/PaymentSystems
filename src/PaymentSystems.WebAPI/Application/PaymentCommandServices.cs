@@ -17,6 +17,7 @@ namespace PaymentSystems.WebAPI.Application
                  cmd => new PaymentId(cmd.PaymentId),
               (payment, cmd) =>
                     payment.ApprovePayment(cmd.Amount, new AccountId(cmd.AccountId)));
+            
             OnExisting<PaymentCommands.Execute>(
                  cmd => new PaymentId(cmd.PaymentId),
                 (payment, cmd) =>

@@ -2,7 +2,7 @@ using PaymentSystems.FrameWork;
 
 namespace PaymentSystems.Domain.Payments
 {
-    public class PaymentState : AggregateState<PaymentId> 
+    public record PaymentState : AggregateState<PaymentId> 
     {
         public string  AccountId     { get; set; }
         public string  PaymentId { get; set; }

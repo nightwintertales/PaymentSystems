@@ -1,7 +1,7 @@
 namespace PaymentSystems.FrameWork
 {
-    public class Document
+    public record Document
     {
-        
+        public string Id { get; init; }
     }
 }
