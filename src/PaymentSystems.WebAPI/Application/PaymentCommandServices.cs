@@ -4,7 +4,6 @@ using PaymentSystems.Contract;
 using PaymentSystems.Domain.Payments;
 using PaymentSystems.Domain.Accounts;
 
-
 namespace PaymentSystems.WebAPI.Application
 {
     public class PaymentCommandService :  CommandService<Payment, PaymentId, PaymentState> {

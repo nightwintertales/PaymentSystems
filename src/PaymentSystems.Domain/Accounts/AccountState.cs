@@ -30,7 +30,7 @@ namespace PaymentSystems.Domain.Accounts {
 
             return this with
             {
-                BookedAmount = e.BookedAmount,
+                BookedAmount = e.BookedBalance,
                 InitiatedTransactions = InitiatedTransactions.RemoveTransaction(initiated),
                 BookedTransactions = BookedTransactions.AddTransactions(initiated)
             };

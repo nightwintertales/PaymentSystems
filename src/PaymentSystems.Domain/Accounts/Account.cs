@@ -46,7 +46,7 @@ namespace PaymentSystems.Domain.Accounts {
                 {
                     AccountId = State.Id.Value,
                     TransactionId = transactionId.Value,
-                    BookedAmount = State.AvailableBalance - transaction.Amount
+                    BookedBalance = State.AvailableBalance - transaction.Amount
                 }
             );
         }

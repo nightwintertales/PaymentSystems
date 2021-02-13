@@ -1,7 +1,7 @@
 
 namespace PaymentSystems.Domain.Events
 {
-    public static class TransactactionEvents
+    public static class TransactionEvents
     { 
         public static class V1
         {
@@ -10,7 +10,7 @@ namespace PaymentSystems.Domain.Events
                 public string TransactionId {get;set;}
                 public string PaymentId {get;set;}
                 public string AccountId {get;set;}
-                public decimal Ammount {get;set;}
+                public decimal Amount {get;set;}
             }
 
             public class TransactionBooked
@@ -18,7 +18,7 @@ namespace PaymentSystems.Domain.Events
                  public string TransactionId {get;set;}
                  public string PaymentId {get;set;}
                  public string AccountId {get;set;}
-                 public decimal Ammount {get;set;}  
+                 public decimal Amount {get;set;}  
             }
         }
     }

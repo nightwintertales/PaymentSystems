@@ -14,6 +14,10 @@ namespace PaymentSystems.Domain.Events {
                 public Shared.Shared.V1.CounterParty Payee { get; init; }
                 
                 public string Message { get; init; }
+                
+                public string SubmittedBy { get; init; }
+                
+                public DateTimeOffset SubmittedAt { get; init; }
             }
 
             public class PaymentApproved {
@@ -24,9 +28,11 @@ namespace PaymentSystems.Domain.Events {
 
             public class PaymentExecuted {
                 public string PaymentId { get; set; }
+                
+                public DateTimeOffset ExecutedAt { get; init; }
             }
 
-            public record PaymentDenied(string PaymentId, string Reason);
+            public record PaymentDenied(string PaymentId, string Reason, DateTimeOffset DeniedAt);
         }
     }
 }

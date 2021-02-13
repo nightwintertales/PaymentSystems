@@ -1,6 +1,11 @@
 namespace PaymentSystems.Domain.Accounts {
     public static class AccountEvents {
         public static class V1 {
+            public record AccountOpened(
+                string AccountId,
+                string CustomerId
+            );
+
             public record TransactionInitiated(
                 string  AccountId,
                 string  TransactionId,
@@ -8,19 +13,16 @@ namespace PaymentSystems.Domain.Accounts {
                 decimal AvailableBalance
             );
 
-            public class TransactionBooked {
-                public string AccountId { get; set; }
-
-                public string TransactionId { get; set; }
-
-                public decimal BookedAmount { get; set; }
-            }
-
-            public class AccountOpened {
-                public string AccountId { get; set; }
-
-                public string CustomerId { get; set; }
-            }
+            public record TransactionBooked(
+                string  AccountId,
+                string  TransactionId,
+                decimal BookedBalance
+            );
+            
+            public record TransactionCancelled(
+                string  AccountId,
+                string  TransactionId
+            );
         }
     }
 }
