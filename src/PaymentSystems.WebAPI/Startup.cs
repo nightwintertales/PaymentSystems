@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using EventStore.Client;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -11,6 +12,10 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
+using MongoDB.Driver;
+using PaymentSystems.FrameWork;
+using PaymentSystems.WebAPI.Application;
+using PaymentSystems.WebAPI.Infrastructure;
 
 namespace PaymentSystems.WebAPI
 {
@@ -28,6 +33,28 @@ namespace PaymentSystems.WebAPI
         {
 
             services.AddControllers();
+            services.AddSingleton(
+                ConfigureMongo(
+                    Configuration["MongoDb:ConnectionString"],
+                    Configuration["MongoDb:Database"]
+                )
+            );
+
+            services.AddSingleton(
+                ctx
+                    => ConfigureEventStore(
+                        Configuration["EventStore:ConnectionString"],
+                        ctx.GetService<ILoggerFactory>()
+                    )
+            );
+
+            services.AddSingleton<IAggregateStore, EsDbAggregateStore>();
+
+            // Application
+            //BookingEventMappings.MapEvents();
+            
+            services.AddSingleton<PaymentCommandService>();
+
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "PaymentSystems.WebAPI", Version = "v1" });
@@ -55,5 +82,18 @@ namespace PaymentSystems.WebAPI
                 endpoints.MapControllers();
             });
         }
+
+        static IMongoDatabase ConfigureMongo(string connectionString, string database) {
+            var settings = MongoClientSettings.FromConnectionString(connectionString);
+            return new MongoClient(settings).GetDatabase(database);
+        }
+
+        static EventStoreClient ConfigureEventStore(string connectionString, ILoggerFactory loggerFactory) {
+            var settings = EventStoreClientSettings.Create(connectionString);
+            settings.ConnectionName = "paymentApp";
+            settings.LoggerFactory  = loggerFactory;
+            return new EventStoreClient(settings);
+        }
+
     }
 }

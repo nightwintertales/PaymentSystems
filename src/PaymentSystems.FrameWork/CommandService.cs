@@ -30,6 +30,10 @@ namespace PaymentSystems.FrameWork
             _getId.Add(typeof(TCommand), cmd => getId((TCommand) cmd));
         }
 
+        protected async Task<T> Load(TId id, CancellationToken cancellationToken) {
+            return  await _store.Load<T, TId, TState>(id,cancellationToken);
+        }
+
         public async Task HandleNew<TCommand>(TCommand cmd, CancellationToken cancellationToken) {
             var aggregate = new T();
             await _actions[typeof(TCommand)](aggregate, cmd);

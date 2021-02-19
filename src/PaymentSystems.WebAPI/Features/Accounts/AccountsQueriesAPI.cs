@@ -1,6 +1,6 @@
 namespace PaymentSystems.WebAPI.Features.Accounts
 {
-    public class AccountsHttpAPI
+    public class AccountsQueriesAPI
     {
         
     }

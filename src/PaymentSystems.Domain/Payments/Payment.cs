@@ -44,7 +44,7 @@ namespace PaymentSystems.Domain.Payments {
                 throw new Exception("It's not approved");
             
             if (!account.CanExecutePayment(this))
-                Apply(new PaymentDenied(State.PaymentId, "Not enough money"));
+                Apply(new PaymentDenied(State.PaymentId, "Not enough money", DateTime.UtcNow));
             else
                 Apply(new PaymentExecuted {PaymentId = State.PaymentId});
         }

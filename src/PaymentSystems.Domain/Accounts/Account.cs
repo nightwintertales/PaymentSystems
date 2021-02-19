@@ -8,12 +8,10 @@ namespace PaymentSystems.Domain.Accounts {
     public class Account : Aggregate<AccountId, AccountState> {
         public Account() => State = new AccountState();
 
-        public void OpenAccount(AccountId accountId) {
+        public void OpenAccount(AccountId accountId, string CustomerId) {
             Apply(
-                new AccountOpened()
-                {
-                    AccountId = accountId.Value
-                }
+                new AccountOpened(accountId.Value, CustomerId)
+                
             );
         }
 
@@ -42,12 +40,12 @@ namespace PaymentSystems.Domain.Accounts {
             if (State.BookedTransactions.HasTransaction(transactionId)) return;
 
             Apply(
-                new TransactionBooked
-                {
-                    AccountId = State.Id.Value,
-                    TransactionId = transactionId.Value,
-                    BookedBalance = State.AvailableBalance - transaction.Amount
-                }
+                new TransactionBooked(
+                
+                    State.Id.Value,
+                    transactionId.Value,
+                    State.AvailableBalance - transaction.Amount
+                )
             );
         }
 

@@ -10,17 +10,24 @@ namespace PaymentSystems.WebAPI.Application
         public PaymentCommandService(IAggregateStore store) : base(store) {
             OnNew<PaymentCommands.Submit>(
                  (payment, cmd) =>
-                    payment.SubmitPayment(new AccountId(cmd.AccountId), new PaymentId(cmd.PaymentId), cmd.Amount));
+                 {
+                    payment.SubmitPayment(new AccountId(cmd.AccountId), new PaymentId(cmd.PaymentId), new Payee(cmd.payeeAccount?.Name, new Domain.PayeeAccount(cmd.payeeAccount?.SortCode,cmd.payeeAccount?.AccountNumber)), cmd.Amount);
+                 });
 
             OnExisting<PaymentCommands.Approve>(
                  cmd => new PaymentId(cmd.PaymentId),
               (payment, cmd) =>
-                    payment.ApprovePayment(cmd.Amount, new AccountId(cmd.AccountId)));
+                    payment.ApprovePayment(cmd.ApprovedBy, cmd.ApprovedAt));
             
+            /*
             OnExisting<PaymentCommands.Execute>(
                  cmd => new PaymentId(cmd.PaymentId),
-                (payment, cmd) =>
-                    payment.ExecutePayment(cmd.Amount, new AccountId(cmd.AccountId)));
+                (payment, cmd) => 
+                {
+                    var account  =  base.Load(new AccountId(cmd.AccountId), new System.Threading.CancellationToken());
+                    payment.ExecutePayment(account)
+                });
+                */
         }
     }
 }

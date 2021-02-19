@@ -6,22 +6,20 @@ namespace PaymentSystems.Contract
                 string  AccountId,
                 decimal Amount,
                 string  PaymentId,
+                PayeeAccount payeeAccount,
                 DateTimeOffset SubmittedAt
             );
 
             public record Approve(
-                string  AccountId,
-                decimal Amount,
                 string  PaymentId,
+                string  ApprovedBy,
                 DateTimeOffset ApprovedAt
             );
 
             public record Execute(
                 string  AccountId,
-                decimal Amount,
                 string  PaymentId,
                 DateTimeOffset ExecutedAt
             );
         }
-    }
-
+}
