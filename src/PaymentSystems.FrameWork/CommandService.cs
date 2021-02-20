@@ -4,15 +4,15 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace PaymentSystems.FrameWork
-{
-     public class CommandService<T, TId, TState>
+namespace PaymentSystems.FrameWork {
+    public class CommandService<T, TId, TState>
         where T : Aggregate<TId, TState>, new() where TId : AggregateId where TState : AggregateState<TId> {
-        readonly IAggregateStore                         _store;
+        protected readonly IAggregateStore Store;
+
         readonly Dictionary<Type, Func<T, object, Task>> _actions = new();
         readonly Dictionary<Type, Func<object, TId>>     _getId   = new();
 
-        protected CommandService(IAggregateStore store) => _store = store;
+        protected CommandService(IAggregateStore store) => Store = store;
 
         protected void OnNew<TCommand>(Func<T, TCommand, Task> action)
             => _actions.Add(typeof(TCommand), (aggregate, cmd) => action(aggregate, (TCommand) cmd));
@@ -30,21 +30,17 @@ namespace PaymentSystems.FrameWork
             _getId.Add(typeof(TCommand), cmd => getId((TCommand) cmd));
         }
 
-        protected async Task<T> Load(TId id, CancellationToken cancellationToken) {
-            return  await _store.Load<T, TId, TState>(id,cancellationToken);
-        }
-
         public async Task HandleNew<TCommand>(TCommand cmd, CancellationToken cancellationToken) {
             var aggregate = new T();
             await _actions[typeof(TCommand)](aggregate, cmd);
-            await _store.Store<T, TId, TState>(aggregate, cancellationToken);
+            await Store.Store<T, TId, TState>(aggregate, cancellationToken);
         }
 
         public async Task HandleExisting<TCommand>(TCommand cmd, CancellationToken cancellationToken) {
             var id        = _getId[typeof(TCommand)](cmd);
-            var aggregate = await _store.Load<T, TId, TState>(id, cancellationToken);
+            var aggregate = await Store.Load<T, TId, TState>(id, cancellationToken);
             await _actions[typeof(TCommand)](aggregate, cmd);
-            await _store.Store<T, TId, TState>(aggregate, cancellationToken);
+            await Store.Store<T, TId, TState>(aggregate, cancellationToken);
         }
 
         static Task Sync(Action action) {
