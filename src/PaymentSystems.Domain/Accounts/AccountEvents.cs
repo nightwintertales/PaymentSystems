@@ -21,7 +21,9 @@ namespace PaymentSystems.Domain.Accounts {
             
             public record TransactionCancelled(
                 string  AccountId,
-                string  TransactionId
+                string  TransactionId,
+                decimal AvailableBalance,
+                string Reason
             );
         }
     }

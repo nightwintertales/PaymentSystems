@@ -11,7 +11,6 @@ namespace PaymentSystems.Domain.Accounts {
         public void OpenAccount(AccountId accountId, string CustomerId) {
             Apply(
                 new AccountOpened(accountId.Value, CustomerId)
-                
             );
         }
 
@@ -41,10 +40,26 @@ namespace PaymentSystems.Domain.Accounts {
 
             Apply(
                 new TransactionBooked(
-                
                     State.Id.Value,
                     transactionId.Value,
                     State.AvailableBalance - transaction.Amount
+                )
+            );
+        }
+        
+        public void CancelTransaction(TransactionId transactionId, string reason) {
+            // if (State.InitiatedTransactions.HasTransaction(transactionId)) return;
+
+            var transaction = State.InitiatedTransactions.FindTransaction(transactionId);
+            if (transaction == default) return;
+            // Idempotence can be ensured differently. Either keep it in a list, or just ignore
+
+            Apply(
+                new TransactionCancelled(
+                    State.Id.Value,
+                    transactionId.Value,
+                    State.AvailableBalance + transaction.Amount,
+                    reason
                 )
             );
         }
@@ -54,17 +69,16 @@ namespace PaymentSystems.Domain.Accounts {
         }
 
         public override AccountState When(object evt) {
-            return evt switch
-            {
+            return evt switch {
                 AccountOpened e =>
-                    new AccountState
-                    {
-                        Id = new AccountId(e.AccountId),
+                    new AccountState {
+                        Id               = new AccountId(e.AccountId),
                         AvailableBalance = 10000,
-                        BookedAmount = 10000
+                        BookedAmount     = 10000
                     },
                 TransactionInitiated e => State = State.Handle(e),
                 TransactionBooked e => State = State.Handle(e),
+                TransactionCancelled e => State = State.Handle(e),
                 _ => State
             };
         }

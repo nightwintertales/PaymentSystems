@@ -1,4 +1,5 @@
 using System;
+using System.Threading;
 using System.Threading.Tasks;
 using MongoDB.Driver;
 using PaymentSystems.FrameWork;
@@ -15,13 +16,18 @@ namespace PaymentSystems.WebAPI.Infrastructure.MongoDb {
 
         public string SubscriptionGroup { get; }
 
-        public async Task HandleEvent(object evt, long? position) {
+        public async Task HandleEvent(object evt, long? position, CancellationToken cancellationToken) {
             var update = GetUpdate(evt);
             if (update == null) return;
 
             var finalUpdate = update.Update.Set(x => x.Position, position);
 
-            await _collection.UpdateOneAsync(update.Filter, finalUpdate, new UpdateOptions {IsUpsert = true});
+            await _collection.UpdateOneAsync(
+                update.Filter,
+                finalUpdate,
+                new UpdateOptions {IsUpsert = true},
+                cancellationToken
+            );
         }
 
         protected abstract UpdateOperation<T> GetUpdate(object evt);

@@ -15,20 +15,17 @@ using Microsoft.OpenApi.Models;
 using MongoDB.Driver;
 using PaymentSystems.FrameWork;
 using PaymentSystems.WebAPI.Application;
+using PaymentSystems.WebAPI.Features;
 using PaymentSystems.WebAPI.Infrastructure;
 
 namespace PaymentSystems.WebAPI
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration)
-        {
-            Configuration = configuration;
-        }
+        public Startup(IConfiguration configuration) => Configuration = configuration;
 
-        public IConfiguration Configuration { get; }
+        IConfiguration Configuration { get; }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
 
@@ -54,7 +51,10 @@ namespace PaymentSystems.WebAPI
             //BookingEventMappings.MapEvents();
             
             services.AddSingleton<PaymentCommandService>();
-            services.AddSingleton<AccountCommandServices>();
+            services.AddSingleton<AccountCommandService>();
+
+            services.AddHostedService<AccountReactorSubscription>();
+            services.AddHostedService<AccountProjectionSubscription>();
 
             services.AddSwaggerGen(c =>
             {
@@ -62,7 +62,6 @@ namespace PaymentSystems.WebAPI
             });
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
@@ -71,8 +70,6 @@ namespace PaymentSystems.WebAPI
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "PaymentSystems.WebAPI v1"));
             }
-
-            app.UseHttpsRedirection();
 
             app.UseRouting();
 

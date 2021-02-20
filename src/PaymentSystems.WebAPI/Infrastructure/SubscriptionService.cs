@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
@@ -11,7 +10,7 @@ namespace PaymentSystems.WebAPI.Infrastructure {
     public abstract class SubscriptionService : IHostedService {
         readonly EventStoreClient _eventStoreClient;
         readonly ICheckpointStore _checkpointStore;
-        readonly IEventHandler[]  _projections;
+        readonly IEventHandler[]  _eventHandlers;
         readonly string           _subscriptionName;
 
         StreamSubscription _subscription;
@@ -21,13 +20,13 @@ namespace PaymentSystems.WebAPI.Infrastructure {
             EventStoreClient           eventStoreClient,
             ICheckpointStore           checkpointStore,
             string                     subscriptionName,
-            IEnumerable<IEventHandler> projections
+            IEnumerable<IEventHandler> eventHandlers
         ) {
             _eventStoreClient = eventStoreClient;
             _checkpointStore  = checkpointStore;
             _subscriptionName = subscriptionName;
 
-            _projections = projections
+            _eventHandlers = eventHandlers
                 .Where(x => x.SubscriptionGroup == subscriptionName)
                 .ToArray();
         }
@@ -60,23 +59,17 @@ namespace PaymentSystems.WebAPI.Infrastructure {
         ) {
             _lastProcessedPosition = (long?) re.Event.Position.CommitPosition;
 
-            if (re.Event.EventType.StartsWith("$")) {
-                await Store();
-            }
-
             var evt = re.Deserialize();
 
             if (evt != null) {
                 await Task.WhenAll(
-                    _projections.Select(
-                        x => x.HandleEvent(evt, (long?) re.OriginalPosition?.CommitPosition)
+                    _eventHandlers.Select(
+                        x => x.HandleEvent(evt, (long?) re.OriginalPosition?.CommitPosition, cancellationToken)
                     )
                 );
             }
 
-            await Store();
-
-            Task Store() => StoreCheckpoint(re.Event.Position.CommitPosition, cancellationToken);
+            await StoreCheckpoint(re.Event.Position.CommitPosition, cancellationToken);
         }
 
         async Task StoreCheckpoint(ulong position, CancellationToken cancellationToken) {

@@ -1,63 +1,58 @@
 using System;
+using PaymentSystems.Domain.Accounts;
 using PaymentSystems.FrameWork;
 using static PaymentSystems.Domain.Transactions.TransactionEvents.V1;
 
-namespace PaymentSystems.Domain.Transactions
-{
-    public class Transaction : Aggregate<TransactionId, TransactionState>
-    {
-        public void InitiateTransaction(TransactionId id, decimal amount, DateTimeOffset  submittedAt)
-         {
+namespace PaymentSystems.Domain.Transactions {
+    public class Transaction : Aggregate<TransactionId, TransactionState> {
+        public void InitiateTransaction(
+            TransactionId id, AccountId accountId, decimal amount, DateTimeOffset initiatedAt
+        ) {
             if (State.Status == TransactionStatus.Initiated) return;
 
             Apply(
-                new TransactionInitiated
-                {
-                    TransactionId = State.TransactionId,
-                    AccountId = State.AccountId,
-                    Amount = State.Amount
+                new TransactionInitiated {
+                    TransactionId = id.Value,
+                    AccountId     = accountId.Value,
+                    Amount        = amount,
+                    InitiatedAt   = initiatedAt
                 }
             );
-         }
+        }
 
-         public void BookTransaction()
-         {
+        public void BookTransaction(DateTimeOffset bookedAt) {
             if (State.Status != TransactionStatus.Initiated) return;
 
             Apply(
-                new TransactionBooked
-                {
+                new TransactionBooked {
                     TransactionId = State.TransactionId,
-                    AccountId = State.AccountId,
-                    Amount = State.Amount
+                    AccountId     = State.AccountId,
+                    BookedAt      = bookedAt
                 }
             );
-         }
+        }
 
-         public void CancelTransaction( string reason, DateTimeOffset  cancelledAt)
-         {
+        public void CancelTransaction(string reason, DateTimeOffset cancelledAt) {
             if (State.Status != TransactionStatus.Initiated) return;
 
             Apply(
-                new TransactionDenied
-                {
+                new TransactionDenied {
                     TransactionId = State.TransactionId,
-                    AccountId = State.AccountId,
-                    Reason = reason
+                    AccountId     = State.AccountId,
+                    Reason        = reason,
+                    DeniedAt      = cancelledAt
                 }
             );
-         }
+        }
 
         public override TransactionState When(object evt) {
-            return evt switch
-            {
+            return evt switch {
                 TransactionInitiated e =>
-                    new TransactionState
-                    {
-                        Id = new TransactionId(e.TransactionId),
+                    new TransactionState {
+                        Id        = new TransactionId(e.TransactionId),
                         AccountId = e.AccountId,
-                        Amount = e.Amount,
-                        Status = TransactionStatus.Initiated
+                        Amount    = e.Amount,
+                        Status    = TransactionStatus.Initiated
                     },
                 TransactionBooked => State = State with {Status = TransactionStatus.Booked},
                 TransactionDenied => State = State with {Status = TransactionStatus.Denied},
@@ -66,4 +61,3 @@ namespace PaymentSystems.Domain.Transactions
         }
     }
 }
-

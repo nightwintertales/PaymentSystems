@@ -7,24 +7,31 @@ using MongoDB.Driver.Linq;
 using PaymentSystems.FrameWork;
 using PaymentSystems.FrameWork.Projections;
 
-namespace PaymentSystems.WebAPI.Infrastructure.MongoDb
-{
+namespace PaymentSystems.WebAPI.Infrastructure.MongoDb {
     public class MongoCheckpointStore : ICheckpointStore {
         readonly int                           _batchSize;
-        readonly         ILogger<MongoCheckpointStore> Log;
+        readonly ILogger<MongoCheckpointStore> _log;
 
-        public MongoCheckpointStore(IMongoCollection<Checkpoint> database, int batchSize, ILogger<MongoCheckpointStore> logger) {
-            Checkpoints     = database;
-            _batchSize = batchSize;
-            Log             = logger;
+        public MongoCheckpointStore(
+            IMongoCollection<Checkpoint> database, int batchSize, ILogger<MongoCheckpointStore> logger
+        ) {
+            Checkpoints = database;
+            _batchSize  = batchSize;
+            _log        = logger;
         }
 
-        public MongoCheckpointStore(IMongoDatabase database, ILogger<MongoCheckpointStore> logger) : this(database.GetCollection<Checkpoint>("checkpoint"), 0, logger) { }
+        public MongoCheckpointStore(IMongoDatabase database, ILogger<MongoCheckpointStore> logger) : this(
+            database.GetCollection<Checkpoint>("checkpoint"),
+            0,
+            logger
+        ) { }
 
         IMongoCollection<Checkpoint> Checkpoints { get; }
 
-        public async ValueTask<Checkpoint> GetLastCheckpoint(string checkpointId, CancellationToken cancellationToken = default) {
-            Log.LogDebug("[{CheckpointId}] Finding checkpoint...", checkpointId);
+        public async ValueTask<Checkpoint> GetLastCheckpoint(
+            string checkpointId, CancellationToken cancellationToken = default
+        ) {
+            _log.LogDebug("[{CheckpointId}] Finding checkpoint...", checkpointId);
 
             var checkpoint = await Checkpoints.AsQueryable()
                 .Where(x => x.Id == checkpointId)
@@ -32,10 +39,18 @@ namespace PaymentSystems.WebAPI.Infrastructure.MongoDb
 
             if (checkpoint is null) {
                 checkpoint = new Checkpoint(checkpointId, null);
-                Log.LogInformation("[{CheckpointId}] Checkpoint not found, defaulting to earliest position", checkpointId);
+
+                _log.LogInformation(
+                    "[{CheckpointId}] Checkpoint not found, defaulting to earliest position",
+                    checkpointId
+                );
             }
             else {
-                Log.LogInformation("[{CheckpointId}] Checkpoint found at position {Checkpoint}", checkpointId, checkpoint.Position);
+                _log.LogInformation(
+                    "[{CheckpointId}] Checkpoint found at position {Checkpoint}",
+                    checkpointId,
+                    checkpoint.Position
+                );
             }
 
             _counters[checkpointId] = 0;
@@ -45,10 +60,12 @@ namespace PaymentSystems.WebAPI.Infrastructure.MongoDb
 
         readonly Dictionary<string, int> _counters = new();
 
-        public async ValueTask<Checkpoint> StoreCheckpoint(Checkpoint checkpoint, CancellationToken cancellationToken = default) {
+        public async ValueTask<Checkpoint> StoreCheckpoint(
+            Checkpoint checkpoint, CancellationToken cancellationToken = default
+        ) {
             _counters[checkpoint.Id]++;
             if (_counters[checkpoint.Id] < _batchSize) return checkpoint;
-            
+
             await Checkpoints.ReplaceOneAsync(
                 x => x.Id == checkpoint.Id,
                 checkpoint,
@@ -56,7 +73,11 @@ namespace PaymentSystems.WebAPI.Infrastructure.MongoDb
                 cancellationToken
             );
 
-            Log.LogDebug("[{CheckpointId}] Checkpoint position set to {Checkpoint}", checkpoint.Id, checkpoint.Position);
+            _log.LogDebug(
+                "[{CheckpointId}] Checkpoint position set to {Checkpoint}",
+                checkpoint.Id,
+                checkpoint.Position
+            );
 
             return checkpoint;
         }

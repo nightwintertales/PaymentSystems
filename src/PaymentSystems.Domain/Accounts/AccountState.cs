@@ -35,6 +35,16 @@ namespace PaymentSystems.Domain.Accounts {
                 BookedTransactions = BookedTransactions.AddTransactions(initiated)
             };
         }
+        
+        internal AccountState Handle(V1.TransactionCancelled e) {
+            var initiated = InitiatedTransactions.FindTransaction(new TransactionId(e.TransactionId));
+            
+            return this with
+            {
+                AvailableBalance = e.AvailableBalance,
+                InitiatedTransactions = InitiatedTransactions.RemoveTransaction(initiated)
+            };
+        }
 
         public record AccountTransaction(TransactionId Id, decimal Amount);
 
@@ -55,5 +65,6 @@ namespace PaymentSystems.Domain.Accounts {
                 return this;
             }
         }
+
     }
 }

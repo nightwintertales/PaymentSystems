@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using MongoDB.Driver;
 using PaymentSystems.FrameWork;
 using PaymentSystems.WebAPI.Infrastructure;
+using static MongoDB.Driver.Builders<PaymentSystems.WebAPI.Features.Accounts.AccountDocument>;
 using static PaymentSystems.Domain.Accounts.AccountEvents;
 
 namespace PaymentSystems.WebAPI.Features.Accounts {
@@ -32,15 +33,28 @@ namespace PaymentSystems.WebAPI.Features.Accounts {
                                 TransactionStatus.Initiated
                             )
                         )
-                )
+                ),
+                V1.TransactionBooked booked => Operation(
+                    filter => filter
+                        .And(
+                            Filter.Eq(x => x.Id, booked.AccountId),
+                            Filter.ElemMatch(x => x.Transactions, x => x.TransactionId == booked.TransactionId)
+                        ),
+                    update => update.Set(x => x.Transactions[-1].Status, TransactionStatus.Booked)
+                ),
+                V1.TransactionCancelled cancelled => null,
+                _ => null
             };
     }
 
     public record AccountDocument : Document {
-        public string                   CustomerId       { get; init; }
-        public decimal                  AvailableBalance { get; init; }
-        public decimal                  BookedBalance    { get; init; }
-        public List<AccountTransaction> Transactions     { get; init; } = new();
+        public string CustomerId { get; init; }
+
+        public decimal AvailableBalance { get; init; }
+
+        public decimal BookedBalance { get; init; }
+
+        public List<AccountTransaction> Transactions { get; init; } = new();
     }
 
     public enum TransactionStatus {

@@ -4,18 +4,24 @@ namespace PaymentSystems.Contract
 {
     public static class AccountCommands
     {
-         public record Initiate(
+         public record InitiateTransaction(
                string  AccountId,
                 string  TransactionId,
                 decimal Amount,
                 DateTimeOffset InitiatedAt
             );
 
-            public record Book(
+            public record BookTransaction(
                 string  AccountId,
                 string  TransactionId,
-                string  ApprovedBy,
                 DateTimeOffset BookedAt
+            );
+            
+            public record CancelTransaction(
+                string  AccountId,
+                string  TransactionId,
+                string Reason,
+                DateTimeOffset CancelledAt
             );
     }
 }
