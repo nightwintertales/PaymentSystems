@@ -54,6 +54,7 @@ namespace PaymentSystems.WebAPI
             //BookingEventMappings.MapEvents();
             
             services.AddSingleton<PaymentCommandService>();
+            services.AddSingleton<AccountCommandServices>();
 
             services.AddSwaggerGen(c =>
             {

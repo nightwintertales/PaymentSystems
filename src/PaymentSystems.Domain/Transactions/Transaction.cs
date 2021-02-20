@@ -1,37 +1,69 @@
-/*
+using System;
+using PaymentSystems.FrameWork;
+using static PaymentSystems.Domain.Transactions.TransactionEvents.V1;
+
 namespace PaymentSystems.Domain.Transactions
 {
-    public class Transaction : AggregateRoot<TransactionId> 
+    public class Transaction : Aggregate<TransactionId, TransactionState>
     {
-         private string _reason;
-         private decimal _amount;
-         private string _transactionId;
-
-         private string _AccountId;
-         public void InitiateTransaction(TransactionId id, Amount amount, DateTimeOffset  submittedAt)
+        public void InitiateTransaction(TransactionId id, decimal amount, DateTimeOffset  submittedAt)
          {
+            if (State.Status == TransactionStatus.Initiated) return;
 
+            Apply(
+                new TransactionInitiated
+                {
+                    TransactionId = State.TransactionId,
+                    AccountId = State.AccountId,
+                    Amount = State.Amount
+                }
+            );
          }
 
-         public void BookTransaction(Amount amount, DateTimeOffset  bookedAt, string reason)
+         public void BookTransaction()
          {
+            if (State.Status != TransactionStatus.Initiated) return;
 
+            Apply(
+                new TransactionBooked
+                {
+                    TransactionId = State.TransactionId,
+                    AccountId = State.AccountId,
+                    Amount = State.Amount
+                }
+            );
          }
 
-         public void CancelTransaction(Amount amount, DateTimeOffset  cancelledAt, string reason)
+         public void CancelTransaction( string reason, DateTimeOffset  cancelledAt)
          {
+            if (State.Status != TransactionStatus.Initiated) return;
 
+            Apply(
+                new TransactionDenied
+                {
+                    TransactionId = State.TransactionId,
+                    AccountId = State.AccountId,
+                    Reason = reason
+                }
+            );
          }
 
-         protected override void When(object @event) 
-         {
-            switch (@event) 
+        public override TransactionState When(object evt) {
+            return evt switch
             {
-            
-               
-            }
-         }
+                TransactionInitiated e =>
+                    new TransactionState
+                    {
+                        Id = new TransactionId(e.TransactionId),
+                        AccountId = e.AccountId,
+                        Amount = e.Amount,
+                        Status = TransactionStatus.Initiated
+                    },
+                TransactionBooked => State = State with {Status = TransactionStatus.Booked},
+                TransactionDenied => State = State with {Status = TransactionStatus.Denied},
+                _ => State
+            };
+        }
     }
 }
 
-*/
