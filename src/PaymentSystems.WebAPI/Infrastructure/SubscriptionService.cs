@@ -59,6 +59,16 @@ namespace PaymentSystems.WebAPI.Infrastructure {
         ) {
             _lastProcessedPosition = (long?) re.Event.Position.CommitPosition;
 
+            // var stream       = re.OriginalStreamId;
+            // var streamEventsRead = _eventStoreClient.ReadStreamAsync(Direction.Backwards, stream, re.OriginalEventNumber);
+            // var streamEvents = await streamEventsRead.ToListAsync();
+            // ArchiveHistoricalEvents(streamEvents.Select(x => x.Event.Data));
+            // await _eventStoreClient.SetStreamMetadataAsync(
+            //     stream,
+            //     StreamState.Any,
+            //     new StreamMetadata(truncateBefore: re.OriginalEventNumber)
+            // );
+                
             var evt = re.Deserialize();
 
             if (evt != null) {
