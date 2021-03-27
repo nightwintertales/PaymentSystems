@@ -15,7 +15,7 @@ namespace PaymentSystems.Domain.Accounts {
         }
 
         public void InitiateTransaction(TransactionId transactionId, decimal amount) {
-            if (State.InitiatedTransactions.HasTransaction(transactionId)) return;
+            if (State.PendingTransactions.HasTransaction(transactionId)) return;
 
             if (State.BookedTransactions.HasTransaction(transactionId)) {
                 // initiating a transaction, which is already booked??? weird!
@@ -33,7 +33,7 @@ namespace PaymentSystems.Domain.Accounts {
         }
 
         public void BookTransaction(TransactionId transactionId) {
-            var transaction = State.InitiatedTransactions.FindTransaction(transactionId);
+            var transaction = State.PendingTransactions.FindTransaction(transactionId);
             if (transaction == default) throw new Exception("Transaction unknown");
 
             if (State.BookedTransactions.HasTransaction(transactionId)) return;
@@ -42,15 +42,15 @@ namespace PaymentSystems.Domain.Accounts {
                 new TransactionBooked(
                     State.Id.Value,
                     transactionId.Value,
-                    State.AvailableBalance - transaction.Amount
+                    State.AccountBalance - transaction.Amount
                 )
             );
         }
-        
+
         public void CancelTransaction(TransactionId transactionId, string reason) {
             // if (State.InitiatedTransactions.HasTransaction(transactionId)) return;
 
-            var transaction = State.InitiatedTransactions.FindTransaction(transactionId);
+            var transaction = State.PendingTransactions.FindTransaction(transactionId);
             if (transaction == default) return;
             // Idempotence can be ensured differently. Either keep it in a list, or just ignore
 
@@ -74,12 +74,12 @@ namespace PaymentSystems.Domain.Accounts {
                     new AccountState {
                         Id               = new AccountId(e.AccountId),
                         AvailableBalance = 10000,
-                        BookedAmount     = 10000
+                        AccountBalance   = 10000
                     },
                 TransactionInitiated e => State = State.Handle(e),
-                TransactionBooked e => State = State.Handle(e),
+                TransactionBooked e    => State = State.Handle(e),
                 TransactionCancelled e => State = State.Handle(e),
-                _ => State
+                _                      => State
             };
         }
     }

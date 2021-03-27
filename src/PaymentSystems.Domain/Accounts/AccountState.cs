@@ -5,13 +5,14 @@ using static PaymentSystems.Domain.Accounts.AccountEvents;
 
 namespace PaymentSystems.Domain.Accounts {
     public record AccountState : AggregateState<AccountId> {
-        //Typically it is the ending balance on the bank statement for each month - Not sure if this has to be in the aggregate. It looks like a field that is calculated on the fly in read model??
+        // The amount available for your disposal
         public decimal AvailableBalance { get; set; }
 
-        //Book balance is a banking term used to describe funds on deposit after adjustments
-        public decimal BookedAmount { get; set; }
+        // This the balance shown in the statement as the start/end balance for the period
+        // Also used for interest rate calculations
+        public decimal AccountBalance { get; set; }
 
-        public AccountTransactions InitiatedTransactions { get; init; } = new();
+        public AccountTransactions PendingTransactions { get; init; } = new();
 
         public AccountTransactions BookedTransactions { get; init; } = new();
 
@@ -19,30 +20,30 @@ namespace PaymentSystems.Domain.Accounts {
             return this with
             {
                 AvailableBalance = e.AvailableBalance,
-                InitiatedTransactions = InitiatedTransactions.AddTransactions(
+                PendingTransactions = PendingTransactions.AddTransactions(
                     new AccountTransaction(new TransactionId(e.TransactionId), e.Amount)
                 )
             };
         }
 
         internal AccountState Handle(V1.TransactionBooked e) {
-            var initiated = InitiatedTransactions.FindTransaction(new TransactionId(e.TransactionId));
+            var initiated = PendingTransactions.FindTransaction(new TransactionId(e.TransactionId));
 
             return this with
             {
-                BookedAmount = e.BookedBalance,
-                InitiatedTransactions = InitiatedTransactions.RemoveTransaction(initiated),
+                AccountBalance = e.BookedBalance,
+                PendingTransactions = PendingTransactions.RemoveTransaction(initiated),
                 BookedTransactions = BookedTransactions.AddTransactions(initiated)
             };
         }
         
         internal AccountState Handle(V1.TransactionCancelled e) {
-            var initiated = InitiatedTransactions.FindTransaction(new TransactionId(e.TransactionId));
+            var initiated = PendingTransactions.FindTransaction(new TransactionId(e.TransactionId));
             
             return this with
             {
                 AvailableBalance = e.AvailableBalance,
-                InitiatedTransactions = InitiatedTransactions.RemoveTransaction(initiated)
+                PendingTransactions = PendingTransactions.RemoveTransaction(initiated)
             };
         }
 

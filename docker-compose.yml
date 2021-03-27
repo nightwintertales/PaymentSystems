@@ -3,7 +3,7 @@ version: '3.7'
 services:
 
   rabbitmq:
-    container_name: gl-rabbitmq
+    container_name: bank-rabbitmq
     hostname: rabbitmq
     image: rabbitmq:management-alpine
     ports:
@@ -13,7 +13,8 @@ services:
       - '15672:15672'
 
   eventstore:
-    image: eventstore/eventstore:20.10.0-buster-slim
+    image: eventstore/eventstore:21.2.0-buster-slim
+    container_name: bank-eventstore
     environment:
       - EVENTSTORE_CLUSTER_SIZE=1
       - EVENTSTORE_RUN_PROJECTIONS=All
@@ -28,7 +29,7 @@ services:
       - "2113:2113"
 
   mongo:
-    container_name: gl-mongo
+    container_name: bank-mongo
     image: mongo
     ports:
       - '27017:27017'
@@ -38,4 +39,8 @@ services:
 
 networks:
   default:
+<<<<<<< HEAD
     name: gl-network
+=======
+    name: bank-network
+>>>>>>> 8f9c3b30cd9865f89985ef9721fd5d09e5e8fde6
