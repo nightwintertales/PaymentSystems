@@ -4,7 +4,13 @@ namespace PaymentSystems.Contract
 {
     public static class AccountCommands
     {
-         public record InitiateTransaction(
+            public record CreateAccount(
+                string  AccountId,
+                string CustomerId,
+                DateTimeOffset CreatedAt
+            );
+
+            public record InitiateTransaction(
                string  AccountId,
                 string  TransactionId,
                 decimal Amount,

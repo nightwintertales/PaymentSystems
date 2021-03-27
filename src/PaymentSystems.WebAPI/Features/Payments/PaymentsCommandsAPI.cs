@@ -25,5 +25,12 @@ namespace PaymentSystems.WebAPI.Features.Payments
         public Task ConfirmPayment([FromBody] Approve cmd, CancellationToken cancellationToken) 
             => _service.HandleExisting(cmd, cancellationToken);
 
+        //Assuming this is initiated by the bank some how....
+        [HttpPost]
+        [Route("execute")]
+        public Task ExecutePayment([FromBody] Approve cmd, CancellationToken cancellationToken) 
+            => _service.HandleExisting(cmd, cancellationToken);
+
+
     }
 }

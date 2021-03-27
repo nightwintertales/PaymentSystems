@@ -50,10 +50,17 @@ namespace PaymentSystems.WebAPI
             // Application
             //BookingEventMappings.MapEvents();
             
+            //Command Services
             services.AddSingleton<PaymentCommandService>();
             services.AddSingleton<AccountCommandService>();
+            services.AddSingleton<TransactionsCommandService>();
 
+            //Reactors
             services.AddHostedService<AccountReactorSubscription>();
+            services.AddHostedService<IntegrationReactorSubscription>();
+            services.AddHostedService<TransactionReactorSubscription>();
+            
+            //Projections
             services.AddHostedService<AccountProjectionSubscription>();
 
             services.AddSwaggerGen(c =>

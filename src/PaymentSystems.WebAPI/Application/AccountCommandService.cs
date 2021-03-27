@@ -5,7 +5,15 @@ using static PaymentSystems.Contract.AccountCommands;
 
 namespace PaymentSystems.WebAPI.Application {
     public class AccountCommandService : CommandService<Account, AccountId, AccountState> {
+
+       
         public AccountCommandService(IAggregateStore store) : base(store) {
+            
+             OnNew<CreateAccount>(
+                (account, cmd) =>
+                account.OpenAccount(new AccountId(cmd.AccountId), cmd.CustomerId)
+            );
+
             OnExisting<InitiateTransaction>(
                 cmd => new AccountId(cmd.AccountId),
                 (account, cmd) => account.InitiateTransaction(new TransactionId(cmd.TransactionId), cmd.Amount)
