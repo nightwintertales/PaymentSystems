@@ -31,7 +31,7 @@ namespace PaymentSystems.Domain.Accounts {
 
             return this with
             {
-                AccountBalance = e.BookedBalance,
+               // AccountBalance = e.BookedBalance,
                 PendingTransactions = PendingTransactions.RemoveTransaction(initiated),
                 BookedTransactions = BookedTransactions.AddTransactions(initiated)
             };

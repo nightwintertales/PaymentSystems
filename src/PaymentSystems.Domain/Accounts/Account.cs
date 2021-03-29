@@ -14,7 +14,7 @@ namespace PaymentSystems.Domain.Accounts {
             );
         }
 
-        public void InitiateTransaction(TransactionId transactionId, decimal amount) {
+        public void InitiateTransaction(TransactionId transactionId, decimal amount, DateTimeOffset initiateAt) {
             if (State.PendingTransactions.HasTransaction(transactionId)) return;
 
             if (State.BookedTransactions.HasTransaction(transactionId)) {
@@ -27,12 +27,14 @@ namespace PaymentSystems.Domain.Accounts {
                     State.Id.Value,
                     transactionId.Value,
                     State.AvailableBalance - amount,
-                    amount
+                    amount,
+                    initiateAt
+
                 )
             );
         }
 
-        public void BookTransaction(TransactionId transactionId) {
+        public void BookTransaction(TransactionId transactionId, DateTimeOffset bookedAt) {
             var transaction = State.PendingTransactions.FindTransaction(transactionId);
             if (transaction == default) throw new Exception("Transaction unknown");
 
@@ -42,12 +44,13 @@ namespace PaymentSystems.Domain.Accounts {
                 new TransactionBooked(
                     State.Id.Value,
                     transactionId.Value,
-                    State.AccountBalance - transaction.Amount
+                    State.AccountBalance - transaction.Amount, 
+                    bookedAt
                 )
             );
         }
 
-        public void CancelTransaction(TransactionId transactionId, string reason) {
+        public void CancelTransaction(TransactionId transactionId, string reason, DateTimeOffset cancelledAt) {
             // if (State.InitiatedTransactions.HasTransaction(transactionId)) return;
 
             var transaction = State.PendingTransactions.FindTransaction(transactionId);
@@ -59,8 +62,8 @@ namespace PaymentSystems.Domain.Accounts {
                     State.Id.Value,
                     transactionId.Value,
                     State.AvailableBalance + transaction.Amount,
-                    reason
-                )
+                    reason,
+                    cancelledAt)
             );
         }
 

@@ -14,6 +14,7 @@ namespace PaymentSystems.Contract
                string  AccountId,
                 string  TransactionId,
                 decimal Amount,
+                decimal AvailableBalance,
                 DateTimeOffset InitiatedAt
             );
 

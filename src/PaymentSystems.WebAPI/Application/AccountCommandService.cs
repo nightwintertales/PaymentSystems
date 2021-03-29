@@ -16,13 +16,13 @@ namespace PaymentSystems.WebAPI.Application {
 
             OnExisting<InitiateTransaction>(
                 cmd => new AccountId(cmd.AccountId),
-                (account, cmd) => account.InitiateTransaction(new TransactionId(cmd.TransactionId), cmd.Amount)
+                (account, cmd) => account.InitiateTransaction(new TransactionId(cmd.TransactionId), cmd.Amount, cmd.InitiatedAt)
             );
 
             OnExisting<BookTransaction>(
                 cmd => new AccountId(cmd.AccountId),
                 (account, cmd) =>
-                    account.BookTransaction(new TransactionId(cmd.TransactionId))
+                    account.BookTransaction(new TransactionId(cmd.TransactionId), cmd.BookedAt)
             );
         }
     }

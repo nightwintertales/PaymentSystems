@@ -6,7 +6,7 @@ using PaymentSystems.FrameWork.Projections;
 using PaymentSystems.WebAPI.Application;
 using PaymentSystems.WebAPI.Infrastructure;
 using static PaymentSystems.Contract.AccountCommands;
-using static PaymentSystems.Domain.Transactions.TransactionEvents;
+using static PaymentSystems.Domain.Accounts.AccountEvents;
 
 namespace PaymentSystems.WebAPI.Features {
     public class AccountReactorSubscription : SubscriptionService {
@@ -40,20 +40,19 @@ namespace PaymentSystems.WebAPI.Features {
                                 initiated.AccountId,
                                 initiated.TransactionId,
                                 initiated.Amount,
-                                initiated.InitiatedAt
-                            ),
+                                initiated.AvailableBalance,
+                                initiated.InitiatedAt),
                             cancellationToken
                         ),
                     V1.TransactionBooked booked =>
                         _commandService.HandleExisting(
                             new BookTransaction(
                                 booked.AccountId,
-                                booked.TransactionId,
-                                booked.BookedAt
-                            ),
+                                booked.TransactionId, 
+                                booked.BookedAt),
                             cancellationToken
                         ),
-                    V1.TransactionDenied denied =>
+                    V1.TransactionCancelled denied =>
                         _commandService.HandleExisting(
                             new CancelTransaction(
                                 denied.AccountId,

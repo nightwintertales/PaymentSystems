@@ -5,7 +5,7 @@ using EventStore.Client;
 using PaymentSystems.FrameWork.Projections;
 using PaymentSystems.WebAPI.Application;
 using PaymentSystems.WebAPI.Infrastructure;
-using static PaymentSystems.Contract.AccountCommands;
+using static PaymentSystems.Contract.TransactionCommands;
 using static PaymentSystems.Domain.Transactions.TransactionEvents;
 
 
@@ -17,7 +17,7 @@ namespace PaymentSystems.WebAPI.Features
         public TransactionReactorSubscription(
             EventStoreClient      eventStoreClient,
             ICheckpointStore      checkpointStore,
-            AccountCommandService commandService
+            TransactionsCommandService commandService
         ) : base(
             eventStoreClient,
             checkpointStore,
@@ -26,11 +26,11 @@ namespace PaymentSystems.WebAPI.Features
         ) { }
 
         class TransactionEventHandler : IEventHandler {
-            readonly AccountCommandService _commandService;
+            readonly TransactionsCommandService _commandService;
 
             public string SubscriptionGroup => SubscriptionName;
 
-            public TransactionEventHandler(AccountCommandService commandService) {
+            public TransactionEventHandler(TransactionsCommandService commandService) {
                 _commandService = commandService;
             }
 

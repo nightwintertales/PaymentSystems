@@ -1,3 +1,5 @@
+using System;
+
 namespace PaymentSystems.Domain.Accounts {
     public static class AccountEvents {
         public static class V1 {
@@ -10,20 +12,23 @@ namespace PaymentSystems.Domain.Accounts {
                 string  AccountId,
                 string  TransactionId,
                 decimal Amount,
-                decimal AvailableBalance
+                decimal AvailableBalance,
+                DateTimeOffset InitiatedAt
             );
 
             public record TransactionBooked(
                 string  AccountId,
                 string  TransactionId,
-                decimal BookedBalance
+                decimal BookedBalance,
+                DateTimeOffset BookedAt
             );
             
             public record TransactionCancelled(
                 string  AccountId,
                 string  TransactionId,
                 decimal AvailableBalance,
-                string Reason
+                string Reason,
+                DateTimeOffset DeniedAt
             );
         }
     }
