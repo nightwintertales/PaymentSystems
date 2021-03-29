@@ -4,6 +4,7 @@ using PaymentSystems.Domain.Transactions;
 using static PaymentSystems.Domain.Accounts.AccountEvents;
 
 namespace PaymentSystems.Domain.Accounts {
+
     public record AccountState : AggregateState<AccountId> {
         // The amount available for your disposal
         public decimal AvailableBalance { get; set; }
