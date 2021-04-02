@@ -3,6 +3,7 @@ using PaymentSystems.Domain;
 using PaymentSystems.Contract;
 using PaymentSystems.Domain.Payments;
 using PaymentSystems.Domain.Accounts;
+using System.Threading.Tasks;
 
 namespace PaymentSystems.WebAPI.Application {
     public class PaymentCommandService : CommandService<Payment, PaymentId, PaymentState> {
@@ -37,5 +38,7 @@ namespace PaymentSystems.WebAPI.Application {
                 }
             );
         }
+
+        public async Task<Payment> GetPaymentByAccountId(string accountId) => await Store.Load<Payment, PaymentId,PaymentState>(new AccountId(accountId), default);
     }
 }

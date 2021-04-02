@@ -28,7 +28,7 @@ namespace PaymentSystems.Domain.Accounts {
                 string  TransactionId,
                 decimal AvailableBalance,
                 string Reason,
-                DateTimeOffset DeniedAt
+                DateTimeOffset CancelledAt
             );
         }
     }

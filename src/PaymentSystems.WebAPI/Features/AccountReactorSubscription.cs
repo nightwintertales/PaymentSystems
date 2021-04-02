@@ -58,7 +58,7 @@ namespace PaymentSystems.WebAPI.Features {
                                 denied.AccountId,
                                 denied.TransactionId,
                                 denied.Reason,
-                                denied.DeniedAt
+                                denied.CancelledAt
                             ),
                             cancellationToken
                         ),

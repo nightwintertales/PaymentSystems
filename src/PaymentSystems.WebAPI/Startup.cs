@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using EventStore.Client;
+using MassTransit;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -15,6 +16,7 @@ using Microsoft.OpenApi.Models;
 using MongoDB.Driver;
 using PaymentSystems.FrameWork;
 using PaymentSystems.WebAPI.Application;
+using PaymentSystems.WebAPI.Consumers;
 using PaymentSystems.WebAPI.Features;
 using PaymentSystems.WebAPI.Infrastructure;
 
@@ -59,6 +61,7 @@ namespace PaymentSystems.WebAPI
             services.AddHostedService<AccountReactorSubscription>();
             services.AddHostedService<IntegrationReactorSubscription>();
             services.AddHostedService<TransactionReactorSubscription>();
+            services.AddHostedService<AccountsIntegrationSubscription>();
             
             //Projections
             services.AddHostedService<AccountProjectionSubscription>();
@@ -66,6 +69,18 @@ namespace PaymentSystems.WebAPI
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "PaymentSystems.WebAPI", Version = "v1" });
+            });
+
+            var busControl = Bus.Factory.CreateUsingRabbitMq(cfg =>
+            {
+                cfg.ReceiveEndpoint("integration-service", e =>
+                {
+                  
+                    e.Consumer(() => new PaymentApprovedConsumer());
+
+                    e.Consumer(() => new AccountTransactionsConsumer());
+
+                });
             });
         }
 
