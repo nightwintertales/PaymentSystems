@@ -39,6 +39,6 @@ namespace PaymentSystems.WebAPI.Application {
             );
         }
 
-        public async Task<Payment> GetPaymentByAccountId(string accountId) => await Store.Load<Payment, PaymentId,PaymentState>(new AccountId(accountId), default);
+       // public async Task<Payment> GetPaymentByAccountId(string accountId) => await Store.Load<Payment, PaymentId,PaymentState>(new AccountId(accountId), default);
     }
 }

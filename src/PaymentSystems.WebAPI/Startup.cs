@@ -75,11 +75,8 @@ namespace PaymentSystems.WebAPI
             {
                 cfg.ReceiveEndpoint("integration-service", e =>
                 {
-                  
                     e.Consumer(() => new PaymentApprovedConsumer());
-
                     e.Consumer(() => new AccountTransactionsConsumer());
-
                 });
             });
         }
