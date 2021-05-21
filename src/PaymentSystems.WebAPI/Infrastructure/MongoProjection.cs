@@ -1,18 +1,18 @@
 using System;
 using System.Threading;
 using System.Threading.Tasks;
+using Eventuous.Subscriptions;
+using Eventuous.Projections.MongoDB;
 using MongoDB.Driver;
-using PaymentSystems.FrameWork;
-using PaymentSystems.FrameWork.Projections;
-using PaymentSystems.WebAPI.Infrastructure.MongoDb;
 
 namespace PaymentSystems.WebAPI.Infrastructure {
-    public abstract class MongoProjection<T> : IEventHandler where T : Document {
+    public abstract class MongoProjection<T> : IEventHandler
+    {
         readonly IMongoCollection<T> _collection;
 
         protected MongoProjection(IMongoDatabase database, string subscriptionGroup) {
             SubscriptionGroup = subscriptionGroup;
-            _collection       = database.GetDocumentCollection<T>();
+            _collection       = database.GetCollection<T>("What NAme?");
         }
 
         public string SubscriptionGroup { get; }
@@ -21,7 +21,7 @@ namespace PaymentSystems.WebAPI.Infrastructure {
             var update = GetUpdate(evt);
             if (update == null) return Task.CompletedTask;
 
-            var finalUpdate = update.Update.Set(x => x.Position, position);
+            var finalUpdate = update.Update      //Set(x => x., position);
 
             return _collection.UpdateOneAsync(
                 update.Filter,
@@ -30,6 +30,8 @@ namespace PaymentSystems.WebAPI.Infrastructure {
                 cancellationToken
             );
         }
+
+        public string SubscriptionId { get; }
 
         protected abstract UpdateOperation<T> GetUpdate(object evt);
 

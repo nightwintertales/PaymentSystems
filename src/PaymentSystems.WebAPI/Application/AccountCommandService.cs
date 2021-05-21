@@ -1,9 +1,11 @@
+using Eventuous;
 using PaymentSystems.Domain.Accounts;
 using PaymentSystems.Domain.Transactions;
 using PaymentSystems.FrameWork;
 using static PaymentSystems.Contract.AccountCommands;
 
 namespace PaymentSystems.WebAPI.Application {
+    
     public class AccountCommandService : CommandService<Account, AccountId, AccountState> {
 
        
@@ -20,6 +22,12 @@ namespace PaymentSystems.WebAPI.Application {
             );
 
             OnExisting<BookTransaction>(
+                cmd => new AccountId(cmd.AccountId),
+                (account, cmd) =>
+                    account.BookTransaction(new TransactionId(cmd.TransactionId))
+            );
+            
+            OnExisting<CancelTransaction>(
                 cmd => new AccountId(cmd.AccountId),
                 (account, cmd) =>
                     account.BookTransaction(new TransactionId(cmd.TransactionId))

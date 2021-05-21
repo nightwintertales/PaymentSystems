@@ -1,16 +1,16 @@
 using System;
+using Eventuous;
 using PaymentSystems.Domain.Payments;
-using PaymentSystems.FrameWork;
 using static PaymentSystems.Domain.Accounts.AccountEvents.V1;
 using PaymentSystems.Domain.Transactions;
 
 namespace PaymentSystems.Domain.Accounts {
-    public class Account : Aggregate<AccountId, AccountState> {
-        public Account() => State = new AccountState();
+    public class Account : Aggregate<AccountState,AccountId> {
+       // public Account() => State = new AccountState();
 
         public void OpenAccount(AccountId accountId, string CustomerId) {
             Apply(
-                new AccountOpened(accountId.Value, CustomerId)
+                new AccountOpened(accountId, CustomerId)
             );
         }
 
@@ -24,8 +24,8 @@ namespace PaymentSystems.Domain.Accounts {
 
             Apply(
                 new TransactionInitiated(
-                    State.Id.Value,
-                    transactionId.Value,
+                    State.Id,
+                    transactionId,
                     State.AvailableBalance - amount,
                     amount
                 )
@@ -40,8 +40,8 @@ namespace PaymentSystems.Domain.Accounts {
 
             Apply(
                 new TransactionBooked(
-                    State.Id.Value,
-                    transactionId.Value,
+                    State.Id,
+                    transactionId,
                     State.AccountBalance - transaction.Amount
                 )
             );
@@ -56,8 +56,8 @@ namespace PaymentSystems.Domain.Accounts {
 
             Apply(
                 new TransactionCancelled(
-                    State.Id.Value,
-                    transactionId.Value,
+                    State.Id,
+                    transactionId,
                     State.AvailableBalance + transaction.Amount,
                     reason
                 )
@@ -68,6 +68,7 @@ namespace PaymentSystems.Domain.Accounts {
             return State.AvailableBalance - payment.State.Amount >= 0;
         }
 
+        /*
         public override AccountState When(object evt) {
             return evt switch {
                 AccountOpened e =>
@@ -82,5 +83,6 @@ namespace PaymentSystems.Domain.Accounts {
                 _                      => State
             };
         }
+        */
     }
 }

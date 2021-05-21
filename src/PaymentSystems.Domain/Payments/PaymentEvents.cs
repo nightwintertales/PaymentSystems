@@ -1,5 +1,4 @@
 using System;
-using PaymentSystems.Domain.Payments;
 
 namespace PaymentSystems.Domain.Events {
     public static class PaymentEvents {

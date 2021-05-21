@@ -1,6 +1,6 @@
 using System.Collections.Generic;
+using Eventuous.Projections.MongoDB.Tools;
 using MongoDB.Driver;
-using PaymentSystems.FrameWork;
 using PaymentSystems.WebAPI.Infrastructure;
 using static MongoDB.Driver.Builders<PaymentSystems.WebAPI.Features.Accounts.AccountDocument>;
 using static PaymentSystems.Domain.Accounts.AccountEvents;
@@ -55,6 +55,10 @@ namespace PaymentSystems.WebAPI.Features.Accounts {
         public decimal BookedBalance { get; init; }
 
         public List<AccountTransaction> Transactions { get; init; } = new();
+
+        public AccountDocument(string Id) : base(Id)
+        {
+        }
     }
 
     public enum TransactionStatus {

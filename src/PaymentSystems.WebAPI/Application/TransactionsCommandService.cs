@@ -1,7 +1,7 @@
 using PaymentSystems.Contract;
-using PaymentSystems.FrameWork;
 using PaymentSystems.Domain.Transactions;
-using System;
+using Eventuous;
+using PaymentSystems.FrameWork;
 
 namespace PaymentSystems.WebAPI.Application
 {

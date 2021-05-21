@@ -4,8 +4,8 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Threading;
 using System.Threading.Tasks;
+using Eventuous.Projections.MongoDB.Tools;
 using MongoDB.Driver;
-using PaymentSystems.FrameWork;
 using static System.String;
 
 namespace PaymentSystems.WebAPI.Infrastructure.MongoDb {

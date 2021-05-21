@@ -1,10 +1,12 @@
 using System;
 using System.Threading;
 using System.Threading.Tasks;
+using Eventuous.Projections.MongoDB.Tools;
+using Eventuous.Subscriptions;
 using MongoDB.Driver;
-using PaymentSystems.FrameWork;
-using PaymentSystems.FrameWork.Projections;
 
+
+//HELP
 namespace PaymentSystems.WebAPI.Infrastructure.MongoDb {
     public abstract class MongoProjection<T> : IEventHandler where T : Document {
         readonly IMongoCollection<T> _collection;
@@ -29,6 +31,8 @@ namespace PaymentSystems.WebAPI.Infrastructure.MongoDb {
                 cancellationToken
             );
         }
+
+        public string SubscriptionId { get; }
 
         protected abstract UpdateOperation<T> GetUpdate(object evt);
 

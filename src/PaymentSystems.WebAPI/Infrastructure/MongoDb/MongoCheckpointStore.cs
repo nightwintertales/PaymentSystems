@@ -1,11 +1,10 @@
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
+using Eventuous.Subscriptions;
 using Microsoft.Extensions.Logging;
 using MongoDB.Driver;
 using MongoDB.Driver.Linq;
-using PaymentSystems.FrameWork;
-using PaymentSystems.FrameWork.Projections;
 
 namespace PaymentSystems.WebAPI.Infrastructure.MongoDb {
     public class MongoCheckpointStore : ICheckpointStore {

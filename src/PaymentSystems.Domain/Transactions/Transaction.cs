@@ -1,10 +1,10 @@
 using System;
+using Eventuous;
 using PaymentSystems.Domain.Accounts;
-using PaymentSystems.FrameWork;
 using static PaymentSystems.Domain.Transactions.TransactionEvents.V1;
 
 namespace PaymentSystems.Domain.Transactions {
-    public class Transaction : Aggregate<TransactionId, TransactionState> {
+    public class Transaction : Aggregate<TransactionState,TransactionId> {
         public void InitiateTransaction(
             TransactionId id, AccountId accountId, decimal amount, DateTimeOffset initiatedAt
         ) {
@@ -12,8 +12,8 @@ namespace PaymentSystems.Domain.Transactions {
 
             Apply(
                 new TransactionInitiated {
-                    TransactionId = id.Value,
-                    AccountId     = accountId.Value,
+                    TransactionId = id,
+                    AccountId     = accountId,
                     Amount        = amount,
                     InitiatedAt   = initiatedAt
                 }
@@ -45,6 +45,7 @@ namespace PaymentSystems.Domain.Transactions {
             );
         }
 
+        /*
         public override TransactionState When(object evt) {
             return evt switch {
                 TransactionInitiated e =>
@@ -59,5 +60,7 @@ namespace PaymentSystems.Domain.Transactions {
                 _ => State
             };
         }
+        
+        */
     }
 }

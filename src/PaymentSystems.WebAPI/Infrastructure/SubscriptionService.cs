@@ -3,8 +3,8 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using EventStore.Client;
+using Eventuous.Subscriptions;
 using Microsoft.Extensions.Hosting;
-using PaymentSystems.FrameWork.Projections;
 
 namespace PaymentSystems.WebAPI.Infrastructure {
     public abstract class SubscriptionService : IHostedService {
@@ -14,7 +14,7 @@ namespace PaymentSystems.WebAPI.Infrastructure {
         readonly string           _subscriptionName;
 
         StreamSubscription _subscription;
-        long?              _lastProcessedPosition;
+        ulong?              _lastProcessedPosition;
 
         protected SubscriptionService(
             EventStoreClient           eventStoreClient,
@@ -27,7 +27,7 @@ namespace PaymentSystems.WebAPI.Infrastructure {
             _subscriptionName = subscriptionName;
 
             _eventHandlers = eventHandlers
-                .Where(x => x.SubscriptionGroup == subscriptionName)
+                .Where(x => x.SubscriptionId == subscriptionName)
                 .ToArray();
         }
 
@@ -57,7 +57,7 @@ namespace PaymentSystems.WebAPI.Infrastructure {
         async Task Handler(
             StreamSubscription sub, ResolvedEvent re, CancellationToken cancellationToken
         ) {
-            _lastProcessedPosition = (long?) re.Event.Position.CommitPosition;
+            _lastProcessedPosition = (ulong?) re.Event.Position.CommitPosition;
 
             // var stream       = re.OriginalStreamId;
             // var streamEventsRead = _eventStoreClient.ReadStreamAsync(Direction.Backwards, stream, re.OriginalEventNumber);
@@ -83,7 +83,7 @@ namespace PaymentSystems.WebAPI.Infrastructure {
         }
 
         async Task StoreCheckpoint(ulong position, CancellationToken cancellationToken) {
-            _lastProcessedPosition = (long?) position;
+            _lastProcessedPosition = (ulong?) position;
             var checkpoint = new Checkpoint(_subscriptionName, _lastProcessedPosition);
             await _checkpointStore.StoreCheckpoint(checkpoint, cancellationToken);
         }

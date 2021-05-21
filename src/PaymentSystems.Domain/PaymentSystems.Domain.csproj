@@ -5,7 +5,22 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\PaymentSystems.FrameWork\PaymentSystems.FrameWork.csproj" />
+    <PackageReference Include="Eventuous" Version="0.3.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Remove="SavingsAccounts\**" />
+    <Compile Remove="ScheduledPayments\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Remove="SavingsAccounts\**" />
+    <EmbeddedResource Remove="ScheduledPayments\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="SavingsAccounts\**" />
+    <None Remove="ScheduledPayments\**" />
   </ItemGroup>
 
 </Project>
