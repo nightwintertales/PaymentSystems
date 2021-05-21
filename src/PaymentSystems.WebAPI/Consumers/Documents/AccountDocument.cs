@@ -5,9 +5,10 @@ using System.Threading.Tasks;
 
 namespace PaymentSystems.WebAPI.Consumers.Documents
 {
+    // Rename to known account balances
     public class AccountDocument
     {
-        public int AccountId { get; set; }
-        public decimal AccountBalance { get; set; }
+        // public int AccountId { get; set; } -> Use the Id property
+        public decimal AccountBalance { get; set; } // -> AvailableBalance
     }
 }

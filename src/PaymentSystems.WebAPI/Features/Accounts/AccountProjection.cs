@@ -1,27 +1,30 @@
 using System.Collections.Generic;
+using System.Threading.Tasks;
+using Eventuous.Projections.MongoDB;
 using Eventuous.Projections.MongoDB.Tools;
+using Microsoft.Extensions.Logging;
 using MongoDB.Driver;
-using PaymentSystems.WebAPI.Infrastructure;
 using static MongoDB.Driver.Builders<PaymentSystems.WebAPI.Features.Accounts.AccountDocument>;
 using static PaymentSystems.Domain.Accounts.AccountEvents;
 
 namespace PaymentSystems.WebAPI.Features.Accounts {
     public class AccountProjection : MongoProjection<AccountDocument> {
-        public AccountProjection(IMongoDatabase database)
+        public AccountProjection(IMongoDatabase database, ILoggerFactory loggerFactory)
             : base(
                 database,
-                AccountProjectionSubscription.SubscriptionGroup
+                AccountProjectionSubscription.SubscriptionGroup,
+                loggerFactory
             ) { }
 
-        protected override UpdateOperation<AccountDocument> GetUpdate(object evt)
+        protected override ValueTask<Operation<AccountDocument>> GetUpdate(object evt)
             => evt switch {
-                V1.AccountOpened opened => Operation(
+                V1.AccountOpened opened => UpdateOperationTask(
                     filter => filter.Eq(x => x.Id, opened.AccountId),
                     update => update
                         .SetOnInsert(x => x.Id, opened.AccountId)
                         .SetOnInsert(x => x.CustomerId, opened.CustomerId)
                 ),
-                V1.TransactionInitiated init => Operation(
+                V1.TransactionInitiated init => UpdateOperationTask(
                     filter => filter.Eq(x => x.Id, init.AccountId),
                     update => update
                         .Set(x => x.AvailableBalance, init.AvailableBalance)
@@ -34,7 +37,7 @@ namespace PaymentSystems.WebAPI.Features.Accounts {
                             )
                         )
                 ),
-                V1.TransactionBooked booked => Operation(
+                V1.TransactionBooked booked => UpdateOperationTask(
                     filter => filter
                         .And(
                             Filter.Eq(x => x.Id, booked.AccountId),
@@ -42,12 +45,12 @@ namespace PaymentSystems.WebAPI.Features.Accounts {
                         ),
                     update => update.Set(x => x.Transactions[-1].Status, TransactionStatus.Booked)
                 ),
-                V1.TransactionCancelled cancelled => null,
-                _ => null
+                V1.TransactionCancelled cancelled => NoOp,
+                _ => NoOp
             };
     }
 
-    public record AccountDocument : Document {
+    public record AccountDocument : ProjectedDocument {
         public string CustomerId { get; init; }
 
         public decimal AvailableBalance { get; init; }

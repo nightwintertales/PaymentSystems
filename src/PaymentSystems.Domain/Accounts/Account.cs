@@ -14,7 +14,7 @@ namespace PaymentSystems.Domain.Accounts {
             );
         }
 
-        public void InitiateTransaction(TransactionId transactionId, decimal amount) {
+        public void InitiateTransaction(TransactionId transactionId, decimal amount, DateTimeOffset at) {
             if (State.PendingTransactions.HasTransaction(transactionId)) return;
 
             if (State.BookedTransactions.HasTransaction(transactionId)) {
@@ -27,12 +27,13 @@ namespace PaymentSystems.Domain.Accounts {
                     State.Id,
                     transactionId,
                     State.AvailableBalance - amount,
-                    amount
+                    amount,
+                    at
                 )
             );
         }
 
-        public void BookTransaction(TransactionId transactionId) {
+        public void BookTransaction(TransactionId transactionId, DateTimeOffset at) {
             var transaction = State.PendingTransactions.FindTransaction(transactionId);
             if (transaction == default) throw new Exception("Transaction unknown");
 
@@ -42,12 +43,13 @@ namespace PaymentSystems.Domain.Accounts {
                 new TransactionBooked(
                     State.Id,
                     transactionId,
-                    State.AccountBalance - transaction.Amount
+                    State.AccountBalance - transaction.Amount,
+                    at
                 )
             );
         }
 
-        public void CancelTransaction(TransactionId transactionId, string reason) {
+        public void CancelTransaction(TransactionId transactionId, string reason, DateTimeOffset at) {
             // if (State.InitiatedTransactions.HasTransaction(transactionId)) return;
 
             var transaction = State.PendingTransactions.FindTransaction(transactionId);
@@ -59,7 +61,8 @@ namespace PaymentSystems.Domain.Accounts {
                     State.Id,
                     transactionId,
                     State.AvailableBalance + transaction.Amount,
-                    reason
+                    reason,
+                    at
                 )
             );
         }

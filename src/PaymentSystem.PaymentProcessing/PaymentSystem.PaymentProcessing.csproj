@@ -1,0 +1,22 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+    <PropertyGroup>
+        <TargetFramework>net5.0</TargetFramework>
+    </PropertyGroup>
+    
+    <ItemGroup>
+        <PackageReference Include="Eventuous.EventStoreDB" Version="0.4.1" />
+        <PackageReference Include="Eventuous.Producers" Version="0.4.1" />
+        <PackageReference Include="Eventuous.Projections.MongoDB" Version="0.4.1" />
+        <PackageReference Include="Eventuous.Subscriptions.EventStoreDB" Version="0.4.1" />
+    </ItemGroup>
+    
+    <ItemGroup>
+        <PackageReference Include="Swashbuckle.AspNetCore" Version="5.6.3" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\PaymentSystems.Domain\PaymentSystems.Domain.csproj" />
+    </ItemGroup>
+
+</Project>

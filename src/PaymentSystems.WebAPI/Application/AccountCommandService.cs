@@ -8,8 +8,6 @@ using static PaymentSystems.Contract.AccountCommands;
 namespace PaymentSystems.WebAPI.Application {
     
     public class AccountCommandService : CommandService<Account, AccountId, AccountState> {
-
-       
         public AccountCommandService(IAggregateStore store) : base(store) {
             
              OnNew<CreateAccount>(
@@ -31,7 +29,7 @@ namespace PaymentSystems.WebAPI.Application {
             OnExisting<CancelTransaction>(
                 cmd => new AccountId(cmd.AccountId),
                 (account, cmd) =>
-                    account.BookTransaction(new TransactionId(cmd.TransactionId))
+                    account.BookTransaction(new TransactionId(cmd.TransactionId), cmd.CancelledAt)
             );
         }
     }

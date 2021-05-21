@@ -11,6 +11,8 @@ using Microsoft.OpenApi.Models;
 using MongoDB.Driver;
 using PaymentSystems.WebAPI.Application;
 using PaymentSystems.WebAPI.Features;
+using PaymentSystems.WebAPI.Features.Accounts;
+using PaymentSystems.WebAPI.Features.Payments;
 using PaymentSystems.WebAPI.Infrastructure;
 using PaymentSystems.WebAPI.Infrastructure.MongoDb;
 
