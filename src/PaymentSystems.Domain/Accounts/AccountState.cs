@@ -1,11 +1,10 @@
 using System.Collections.Generic;
-using PaymentSystems.FrameWork;
+using Eventuous;
 using PaymentSystems.Domain.Transactions;
 using static PaymentSystems.Domain.Accounts.AccountEvents;
 
 namespace PaymentSystems.Domain.Accounts {
-
-    public record AccountState : AggregateState<AccountId> {
+    public record AccountState : AggregateState<AccountState,AccountId> {
         // The amount available for your disposal
         public decimal AvailableBalance { get; set; }
 
@@ -17,7 +16,7 @@ namespace PaymentSystems.Domain.Accounts {
 
         public AccountTransactions BookedTransactions { get; init; } = new();
 
-        internal AccountState Handle(V1.TransactionInitiated e) {
+        private AccountState Handle(V1.TransactionInitiated e) {
             return this with
             {
                 AvailableBalance = e.AvailableBalance,
@@ -32,7 +31,7 @@ namespace PaymentSystems.Domain.Accounts {
 
             return this with
             {
-               // AccountBalance = e.BookedBalance,
+                AccountBalance = e.BookedBalance,
                 PendingTransactions = PendingTransactions.RemoveTransaction(initiated),
                 BookedTransactions = BookedTransactions.AddTransactions(initiated)
             };
@@ -67,6 +66,20 @@ namespace PaymentSystems.Domain.Accounts {
                 return this;
             }
         }
-
+        public AccountState State { get; set; }
+        public override AccountState When(object @event)
+            => @event switch
+            {
+            V1.AccountOpened e =>
+            new AccountState {
+                Id               = new AccountId(e.AccountId),
+                AvailableBalance = 10000,
+                AccountBalance   = 10000
+            },
+            V1.TransactionInitiated e => State = State.Handle(e),
+            V1.TransactionBooked e    => State = State.Handle(e),
+            V1.TransactionCancelled e => State = State.Handle(e),
+            _                      => State
+        };
     }
 }

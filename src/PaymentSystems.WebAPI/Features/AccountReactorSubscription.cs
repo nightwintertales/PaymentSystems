@@ -1,12 +1,11 @@
-using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using EventStore.Client;
-using PaymentSystems.FrameWork.Projections;
+using Eventuous.Subscriptions;
 using PaymentSystems.WebAPI.Application;
-using PaymentSystems.WebAPI.Infrastructure;
 using static PaymentSystems.Contract.AccountCommands;
-using static PaymentSystems.Domain.Accounts.AccountEvents;
+using static PaymentSystems.Domain.Transactions.TransactionEvents;
+using SubscriptionService = PaymentSystems.WebAPI.Infrastructure.SubscriptionService;
 
 namespace PaymentSystems.WebAPI.Features {
     public class AccountReactorSubscription : SubscriptionService {
@@ -40,31 +39,34 @@ namespace PaymentSystems.WebAPI.Features {
                                 initiated.AccountId,
                                 initiated.TransactionId,
                                 initiated.Amount,
-                                initiated.AvailableBalance,
-                                initiated.InitiatedAt),
+                                initiated.InitiatedAt
+                            ),
                             cancellationToken
                         ),
                     V1.TransactionBooked booked =>
                         _commandService.HandleExisting(
                             new BookTransaction(
                                 booked.AccountId,
-                                booked.TransactionId, 
-                                booked.BookedAt),
+                                booked.TransactionId,
+                                booked.BookedAt
+                            ),
                             cancellationToken
                         ),
-                    V1.TransactionCancelled denied =>
+                    V1.TransactionDenied denied =>
                         _commandService.HandleExisting(
                             new CancelTransaction(
                                 denied.AccountId,
                                 denied.TransactionId,
                                 denied.Reason,
-                                denied.CancelledAt
+                                denied.DeniedAt
                             ),
                             cancellationToken
                         ),
                     _ => Task.CompletedTask
                 };
             }
+
+            public string SubscriptionId { get; }
         }
     }
 }

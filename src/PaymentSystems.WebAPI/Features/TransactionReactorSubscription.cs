@@ -1,23 +1,21 @@
-using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using EventStore.Client;
-using PaymentSystems.FrameWork.Projections;
+using Eventuous.Subscriptions;
 using PaymentSystems.WebAPI.Application;
-using PaymentSystems.WebAPI.Infrastructure;
-using static PaymentSystems.Contract.TransactionCommands;
+using static PaymentSystems.Contract.AccountCommands;
 using static PaymentSystems.Domain.Transactions.TransactionEvents;
-
+using SubscriptionService = PaymentSystems.WebAPI.Infrastructure.SubscriptionService;
 
 namespace PaymentSystems.WebAPI.Features
 {
-    public class TransactionReactorSubscription : SubscriptionService {
+    public class  TransactionReactorSubscription : SubscriptionService {
         const string SubscriptionName = "TransactionReactors";
 
         public TransactionReactorSubscription(
             EventStoreClient      eventStoreClient,
             ICheckpointStore      checkpointStore,
-            TransactionsCommandService commandService
+            AccountCommandService commandService
         ) : base(
             eventStoreClient,
             checkpointStore,
@@ -26,11 +24,11 @@ namespace PaymentSystems.WebAPI.Features
         ) { }
 
         class TransactionEventHandler : IEventHandler {
-            readonly TransactionsCommandService _commandService;
+            readonly AccountCommandService _commandService;
 
             public string SubscriptionGroup => SubscriptionName;
 
-            public TransactionEventHandler(TransactionsCommandService commandService) {
+            public TransactionEventHandler(AccountCommandService commandService) {
                 _commandService = commandService;
             }
 
@@ -68,6 +66,8 @@ namespace PaymentSystems.WebAPI.Features
                     _ => Task.CompletedTask
                 };
             }
+
+            public string SubscriptionId { get; }
         }
     }
 }

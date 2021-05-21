@@ -1,8 +1,7 @@
+using Eventuous.Projections.MongoDB.Tools;
 using MongoDB.Bson.Serialization;
 using MongoDB.Bson.Serialization.Conventions;
 using MongoDB.Driver;
-using PaymentSystems.FrameWork;
-
 namespace PaymentSystems.WebAPI.Infrastructure.MongoDb {
     public static class MongoDefaults {
         public static readonly BulkWriteOptions DefaultBulkWriteOptions = new() {IsOrdered = false};

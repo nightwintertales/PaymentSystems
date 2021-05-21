@@ -3,25 +3,26 @@ using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Threading;
 using System.Threading.Tasks;
+using Eventuous.Projections.MongoDB.Tools;
 using MongoDB.Driver;
 using MongoDB.Driver.Linq;
-using PaymentSystems.FrameWork;
 
 namespace PaymentSystems.WebAPI.Infrastructure.MongoDb {
+    
     public static class MongoDatabaseExtensions {
         public static Task<bool> DocumentExists<T>(
             this IMongoDatabase database,
             string              id,
             CancellationToken   cancellationToken = default
         ) where T : Document
-            => database.GetDocumentCollection<T>().DocumentExists(id, cancellationToken);
+            => MongoCollectionExtensions.DocumentExists(database.GetDocumentCollection<T>(), id, cancellationToken);
 
         public static Task<T> LoadDocument<T>(
             this IMongoDatabase database,
             string              id,
             CancellationToken   cancellationToken = default
         ) where T : Document
-            => database.GetDocumentCollection<T>().LoadDocument(id, cancellationToken);
+            => MongoCollectionExtensions.LoadDocument(database.GetDocumentCollection<T>(), id, cancellationToken);
 
         public static Task<TResult> LoadDocumentAs<T, TResult>(
             this IMongoDatabase          database,
@@ -29,14 +30,14 @@ namespace PaymentSystems.WebAPI.Infrastructure.MongoDb {
             Expression<Func<T, TResult>> projection,
             CancellationToken            cancellationToken = default
         ) where T : Document
-            => database.GetDocumentCollection<T>().LoadDocumentAs(id, projection, cancellationToken);
+            => MongoCollectionExtensions.LoadDocumentAs(database.GetDocumentCollection<T>(), id, projection, cancellationToken);
 
         public static Task<List<T>> LoadDocuments<T>(
             this IMongoDatabase database,
             IEnumerable<string> ids,
             CancellationToken   cancellationToken = default
         ) where T : Document
-            => database.GetDocumentCollection<T>().LoadDocuments(ids, cancellationToken);
+            => MongoCollectionExtensions.LoadDocuments(database.GetDocumentCollection<T>(), ids, cancellationToken);
 
         public static Task<List<TResult>> LoadDocumentsAs<T, TResult>(
             this IMongoDatabase          database,
@@ -44,7 +45,7 @@ namespace PaymentSystems.WebAPI.Infrastructure.MongoDb {
             Expression<Func<T, TResult>> projection,
             CancellationToken            cancellationToken = default
         ) where T : Document
-            => database.GetDocumentCollection<T>().LoadDocumentsAs(ids, projection, cancellationToken);
+            => MongoCollectionExtensions.LoadDocumentsAs(database.GetDocumentCollection<T>(), ids, projection, cancellationToken);
 
         public static Task<TResult> LoadDocumentAs<T, TResult>(
             this IMongoDatabase              database,
@@ -52,7 +53,7 @@ namespace PaymentSystems.WebAPI.Infrastructure.MongoDb {
             ProjectionDefinition<T, TResult> projection,
             CancellationToken                cancellationToken = default
         ) where T : Document
-            => database.GetDocumentCollection<T>().LoadDocumentAs(id, projection, cancellationToken);
+            => MongoCollectionExtensions.LoadDocumentAs(database.GetDocumentCollection<T>(), id, projection, cancellationToken);
 
         public static Task<TResult> LoadDocumentAs<T, TResult>(
             this IMongoDatabase                                           database,
@@ -60,7 +61,7 @@ namespace PaymentSystems.WebAPI.Infrastructure.MongoDb {
             Func<ProjectionDefinitionBuilder<T>, ProjectionDefinition<T>> projection,
             CancellationToken                                             cancellationToken = default
         ) where T : Document
-            => database.GetDocumentCollection<T>().LoadDocumentAs<T, TResult>(id, projection, cancellationToken);
+            => MongoCollectionExtensions.LoadDocumentAs<T, TResult>(database.GetDocumentCollection<T>(), id, projection, cancellationToken);
 
         /// <summary>
         /// Replaces the document or inserts a new one if no matching document by id is found.
@@ -70,7 +71,7 @@ namespace PaymentSystems.WebAPI.Infrastructure.MongoDb {
             T                   document,
             CancellationToken   cancellationToken = default
         ) where T : Document
-            => database.GetDocumentCollection<T>().ReplaceDocument(document, cancellationToken);
+            => MongoCollectionExtensions.ReplaceDocument(database.GetDocumentCollection<T>(), document, cancellationToken);
 
         /// <summary>
         /// Replaces the document or inserts a new one if no matching document by id is found.
@@ -80,7 +81,7 @@ namespace PaymentSystems.WebAPI.Infrastructure.MongoDb {
             T                   document,
             CancellationToken   cancellationToken = default
         ) where T : Document
-            => database.GetDocumentCollection<T>().ReplaceDocument(document, cancellationToken);
+            => MongoCollectionExtensions.ReplaceDocument(database.GetDocumentCollection<T>(), document, cancellationToken);
 
         /// <summary>
         /// Replaces the document or inserts a new one if no matching document by id is found.
@@ -91,7 +92,7 @@ namespace PaymentSystems.WebAPI.Infrastructure.MongoDb {
             Action<ReplaceOptions> configure,
             CancellationToken      cancellationToken = default
         ) where T : Document
-            => database.GetDocumentCollection<T>().ReplaceDocument(document, configure, cancellationToken);
+            => MongoCollectionExtensions.ReplaceDocument(database.GetDocumentCollection<T>(), document, configure, cancellationToken);
 
         public static Task UpdateDocument<T>(
             this IMongoDatabase   database,
@@ -100,7 +101,7 @@ namespace PaymentSystems.WebAPI.Infrastructure.MongoDb {
             Action<UpdateOptions> configure,
             CancellationToken     cancellationToken = default
         ) where T : Document
-            => database.GetDocumentCollection<T>().UpdateDocument(filter, update, configure, cancellationToken);
+            => MongoCollectionExtensions.UpdateDocument(database.GetDocumentCollection<T>(), filter, update, configure, cancellationToken);
 
         public static Task UpdateDocument<T>(
             this IMongoDatabase                                   database,
@@ -109,7 +110,7 @@ namespace PaymentSystems.WebAPI.Infrastructure.MongoDb {
             Action<UpdateOptions>                                 configure,
             CancellationToken                                     cancellationToken = default
         ) where T : Document
-            => database.GetDocumentCollection<T>().UpdateDocument(filter, update, configure, cancellationToken);
+            => MongoCollectionExtensions.GetDocumentCollection<T>(database).UpdateDocument(filter, update, configure, cancellationToken);
 
         public static Task UpdateDocument<T>(
             this IMongoDatabase database,
@@ -117,7 +118,7 @@ namespace PaymentSystems.WebAPI.Infrastructure.MongoDb {
             UpdateDefinition<T> update,
             CancellationToken   cancellationToken = default
         ) where T : Document
-            => database.GetDocumentCollection<T>().UpdateDocument(filter, update, cancellationToken);
+            => MongoCollectionExtensions.UpdateDocument(database.GetDocumentCollection<T>(), filter, update, cancellationToken);
 
         public static Task UpdateDocument<T>(
             this IMongoDatabase                                   database,
@@ -125,7 +126,7 @@ namespace PaymentSystems.WebAPI.Infrastructure.MongoDb {
             Func<UpdateDefinitionBuilder<T>, UpdateDefinition<T>> update,
             CancellationToken                                     cancellationToken = default
         ) where T : Document
-            => database.GetDocumentCollection<T>().UpdateDocument(filter, update, cancellationToken);
+            => MongoCollectionExtensions.GetDocumentCollection<T>(database).UpdateDocument(filter, update, cancellationToken);
 
         public static Task UpdateDocument<T>(
             this IMongoDatabase                                   database,
@@ -134,7 +135,7 @@ namespace PaymentSystems.WebAPI.Infrastructure.MongoDb {
             Action<UpdateOptions>                                 configure,
             CancellationToken                                     cancellationToken = default
         ) where T : Document
-            => database.GetDocumentCollection<T>().UpdateDocument(id, update, configure, cancellationToken);
+            => MongoCollectionExtensions.GetDocumentCollection<T>(database).UpdateDocument(id, update, configure, cancellationToken);
 
         public static Task UpdateDocument<T>(
             this IMongoDatabase                                   database,
@@ -142,7 +143,7 @@ namespace PaymentSystems.WebAPI.Infrastructure.MongoDb {
             Func<UpdateDefinitionBuilder<T>, UpdateDefinition<T>> update,
             CancellationToken                                     cancellationToken = default
         ) where T : Document
-            => database.GetDocumentCollection<T>().UpdateDocument(id, update, cancellationToken);
+            => MongoCollectionExtensions.GetDocumentCollection<T>(database).UpdateDocument(id, update, cancellationToken);
 
         public static Task UpdateDocument<T>(
             this IMongoDatabase database,
@@ -150,7 +151,7 @@ namespace PaymentSystems.WebAPI.Infrastructure.MongoDb {
             UpdateDefinition<T> update,
             CancellationToken   cancellationToken = default
         ) where T : Document
-            => database.GetDocumentCollection<T>().UpdateDocument(id, update, cancellationToken);
+            => MongoCollectionExtensions.UpdateDocument(database.GetDocumentCollection<T>(), id, update, cancellationToken);
 
         public static Task<long> UpdateManyDocuments<T>(
             this IMongoDatabase                                   database,
@@ -158,7 +159,7 @@ namespace PaymentSystems.WebAPI.Infrastructure.MongoDb {
             Func<UpdateDefinitionBuilder<T>, UpdateDefinition<T>> update,
             CancellationToken                                     cancellationToken = default
         ) where T : Document
-            => database.GetDocumentCollection<T>().UpdateManyDocuments(filter, update, cancellationToken);
+            => MongoCollectionExtensions.GetDocumentCollection<T>(database).UpdateManyDocuments(filter, update, cancellationToken);
 
         public static Task<long> UpdateManyDocuments<T>(
             this IMongoDatabase database,
@@ -166,7 +167,7 @@ namespace PaymentSystems.WebAPI.Infrastructure.MongoDb {
             UpdateDefinition<T> update,
             CancellationToken   cancellationToken = default
         ) where T : Document
-            => database.GetDocumentCollection<T>().UpdateManyDocuments(filter, update, cancellationToken);
+            => MongoCollectionExtensions.UpdateManyDocuments(database.GetDocumentCollection<T>(), filter, update, cancellationToken);
 
         public static Task<long> UpdateManyDocuments<T>(
             this IMongoDatabase                                   database,
@@ -175,7 +176,7 @@ namespace PaymentSystems.WebAPI.Infrastructure.MongoDb {
             Action<UpdateOptions>                                 configure,
             CancellationToken                                     cancellationToken = default
         ) where T : Document
-            => database.GetDocumentCollection<T>().UpdateManyDocuments(filter, update, configure, cancellationToken);
+            => MongoCollectionExtensions.GetDocumentCollection<T>(database).UpdateManyDocuments(filter, update, configure, cancellationToken);
 
         public static Task<long> UpdateManyDocuments<T>(
             this IMongoDatabase   database,
@@ -184,28 +185,28 @@ namespace PaymentSystems.WebAPI.Infrastructure.MongoDb {
             Action<UpdateOptions> configure,
             CancellationToken     cancellationToken = default
         ) where T : Document
-            => database.GetDocumentCollection<T>().UpdateManyDocuments(filter, update, configure, cancellationToken);
+            => MongoCollectionExtensions.UpdateManyDocuments(database.GetDocumentCollection<T>(), filter, update, configure, cancellationToken);
 
         public static Task<bool> DeleteDocument<T>(
             this IMongoDatabase database,
             string              id,
             CancellationToken   cancellationToken = default
         ) where T : Document
-            => database.GetDocumentCollection<T>().DeleteDocument(id, cancellationToken);
+            => MongoCollectionExtensions.DeleteDocument(database.GetDocumentCollection<T>(), id, cancellationToken);
 
         public static Task<long> DeleteManyDocuments<T>(
             this IMongoDatabase                                   database,
             Func<FilterDefinitionBuilder<T>, FilterDefinition<T>> filter,
             CancellationToken                                     cancellationToken = default
         ) where T : Document
-            => database.GetDocumentCollection<T>().DeleteManyDocuments(filter, cancellationToken);
+            => MongoCollectionExtensions.GetDocumentCollection<T>(database).DeleteManyDocuments(filter, cancellationToken);
 
         public static Task<long> DeleteManyDocuments<T>(
             this IMongoDatabase database,
             FilterDefinition<T> filter,
             CancellationToken   cancellationToken = default
         ) where T : Document
-            => database.GetDocumentCollection<T>().DeleteManyDocuments(filter, cancellationToken);
+            => MongoCollectionExtensions.DeleteManyDocuments(database.GetDocumentCollection<T>(), filter, cancellationToken);
 
         public static Task<long> BulkUpdateDocuments<T>(
             this IMongoDatabase                                      database,
@@ -215,7 +216,7 @@ namespace PaymentSystems.WebAPI.Infrastructure.MongoDb {
             Action<BulkWriteOptions>                                 configure,
             CancellationToken                                        cancellationToken = default
         ) where T : Document
-            => database.GetDocumentCollection<T>().BulkUpdateDocuments(documents, filter, update, configure, cancellationToken);
+            => MongoCollectionExtensions.GetDocumentCollection<T>(database).BulkUpdateDocuments(documents, filter, update, configure, cancellationToken);
 
         public static Task<long> BulkUpdateDocuments<T>(
             this IMongoDatabase                                      database,
@@ -224,7 +225,7 @@ namespace PaymentSystems.WebAPI.Infrastructure.MongoDb {
             Func<T, UpdateDefinitionBuilder<T>, UpdateDefinition<T>> update,
             CancellationToken                                        cancellationToken = default
         ) where T : Document
-            => database.GetDocumentCollection<T>().BulkUpdateDocuments(documents, filter, update, cancellationToken);
+            => MongoCollectionExtensions.GetDocumentCollection<T>(database).BulkUpdateDocuments(documents, filter, update, cancellationToken);
 
         public static Task<bool> DocumentExists<T>(
             this IMongoDatabase database,
@@ -232,7 +233,7 @@ namespace PaymentSystems.WebAPI.Infrastructure.MongoDb {
             MongoCollectionName collectionName,
             CancellationToken   cancellationToken = default
         ) where T : Document
-            => database.GetDocumentCollection<T>(collectionName).DocumentExists(id, cancellationToken);
+            => MongoCollectionExtensions.DocumentExists(database.GetDocumentCollection<T>(collectionName), id, cancellationToken);
 
         public static Task<T> LoadDocument<T>(
             this IMongoDatabase database,
@@ -240,7 +241,7 @@ namespace PaymentSystems.WebAPI.Infrastructure.MongoDb {
             MongoCollectionName collectionName,
             CancellationToken   cancellationToken = default
         ) where T : Document
-            => database.GetDocumentCollection<T>(collectionName).LoadDocument(id, cancellationToken);
+            => MongoCollectionExtensions.LoadDocument(database.GetDocumentCollection<T>(collectionName), id, cancellationToken);
 
         public static Task<TResult> LoadDocumentAs<T, TResult>(
             this IMongoDatabase          database,
@@ -249,7 +250,7 @@ namespace PaymentSystems.WebAPI.Infrastructure.MongoDb {
             MongoCollectionName          collectionName,
             CancellationToken            cancellationToken = default
         ) where T : Document
-            => database.GetDocumentCollection<T>(collectionName).LoadDocumentAs(id, projection, cancellationToken);
+            => MongoCollectionExtensions.LoadDocumentAs(database.GetDocumentCollection<T>(collectionName), id, projection, cancellationToken);
 
         public static Task<TResult> LoadDocumentAs<T, TResult>(
             this IMongoDatabase              database,
@@ -258,7 +259,7 @@ namespace PaymentSystems.WebAPI.Infrastructure.MongoDb {
             MongoCollectionName              collectionName,
             CancellationToken                cancellationToken = default
         ) where T : Document
-            => database.GetDocumentCollection<T>(collectionName).LoadDocumentAs(id, projection, cancellationToken);
+            => MongoCollectionExtensions.LoadDocumentAs(database.GetDocumentCollection<T>(collectionName), id, projection, cancellationToken);
 
         public static Task<TResult> LoadDocumentAs<T, TResult>(
             this IMongoDatabase                                           database,
@@ -267,7 +268,7 @@ namespace PaymentSystems.WebAPI.Infrastructure.MongoDb {
             MongoCollectionName                                           collectionName,
             CancellationToken                                             cancellationToken = default
         ) where T : Document
-            => database.GetDocumentCollection<T>(collectionName).LoadDocumentAs<T, TResult>(id, projection, cancellationToken);
+            => MongoCollectionExtensions.LoadDocumentAs<T, TResult>(database.GetDocumentCollection<T>(collectionName), id, projection, cancellationToken);
 
         public static Task UpdateDocument<T>(
             this IMongoDatabase                                   database,
@@ -285,7 +286,7 @@ namespace PaymentSystems.WebAPI.Infrastructure.MongoDb {
             UpdateDefinition<T> update,
             CancellationToken   cancellationToken = default
         ) where T : Document
-            => database.GetDocumentCollection<T>(collectionName).UpdateDocument(id, update, cancellationToken);
+            => MongoCollectionExtensions.UpdateDocument(database.GetDocumentCollection<T>(collectionName), id, update, cancellationToken);
 
         public static Task<long> UpdateManyDocuments<T>(
             this IMongoDatabase                                   database,
@@ -303,7 +304,7 @@ namespace PaymentSystems.WebAPI.Infrastructure.MongoDb {
             UpdateDefinition<T> update,
             CancellationToken   cancellationToken = default
         ) where T : Document
-            => database.GetDocumentCollection<T>(collectionName).UpdateManyDocuments(filter, update, cancellationToken);
+            => MongoCollectionExtensions.UpdateManyDocuments(database.GetDocumentCollection<T>(collectionName), filter, update, cancellationToken);
 
         public static Task<bool> DeleteDocument<T>(
             this IMongoDatabase database,
@@ -311,7 +312,7 @@ namespace PaymentSystems.WebAPI.Infrastructure.MongoDb {
             MongoCollectionName collectionName,
             CancellationToken   cancellationToken = default
         ) where T : Document
-            => database.GetDocumentCollection<T>(collectionName).DeleteDocument(id, cancellationToken);
+            => MongoCollectionExtensions.DeleteDocument(database.GetDocumentCollection<T>(collectionName), id, cancellationToken);
 
         public static Task<long> DeleteManyDocuments<T>(
             this IMongoDatabase                                   database,
@@ -327,7 +328,7 @@ namespace PaymentSystems.WebAPI.Infrastructure.MongoDb {
             FilterDefinition<T> filter,
             CancellationToken   cancellationToken = default
         ) where T : Document
-            => database.GetDocumentCollection<T>(collectionName).DeleteManyDocuments(filter, cancellationToken);
+            => MongoCollectionExtensions.DeleteManyDocuments(database.GetDocumentCollection<T>(collectionName), filter, cancellationToken);
 
         public static IMongoQueryable<T> AsQueryable<T>(
             this IMongoDatabase      database,
@@ -347,7 +348,7 @@ namespace PaymentSystems.WebAPI.Infrastructure.MongoDb {
             var options = new AggregateOptions();
             configure?.Invoke(options);
 
-            return database.GetDocumentCollection<T>().AsQueryable(options);
+            return MongoCollectionExtensions.GetDocumentCollection<T>(database).AsQueryable(options);
         }
 
         public static Task<string> CreateDocumentIndex<T>(
@@ -355,6 +356,6 @@ namespace PaymentSystems.WebAPI.Infrastructure.MongoDb {
             Func<IndexKeysDefinitionBuilder<T>, IndexKeysDefinition<T>> index,
             Action<CreateIndexOptions>                                  configure = null
         ) where T : Document
-            => database.GetDocumentCollection<T>().CreateDocumentIndex(index, configure);
+            => MongoCollectionExtensions.GetDocumentCollection<T>(database).CreateDocumentIndex(index, configure);
     }
 }

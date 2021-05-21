@@ -1,20 +1,20 @@
 using System;
+using Eventuous;
 using PaymentSystems.Domain.Payments;
-using PaymentSystems.FrameWork;
 using static PaymentSystems.Domain.Accounts.AccountEvents.V1;
 using PaymentSystems.Domain.Transactions;
 
 namespace PaymentSystems.Domain.Accounts {
-    public class Account : Aggregate<AccountId, AccountState> {
-        public Account() => State = new AccountState();
+    public class Account : Aggregate<AccountState,AccountId> {
+       // public Account() => State = new AccountState();
 
         public void OpenAccount(AccountId accountId, string CustomerId) {
             Apply(
-                new AccountOpened(accountId.Value, CustomerId)
+                new AccountOpened(accountId, CustomerId)
             );
         }
 
-        public void InitiateTransaction(TransactionId transactionId, decimal amount, DateTimeOffset initiateAt) {
+        public void InitiateTransaction(TransactionId transactionId, decimal amount) {
             if (State.PendingTransactions.HasTransaction(transactionId)) return;
 
             if (State.BookedTransactions.HasTransaction(transactionId)) {
@@ -24,17 +24,15 @@ namespace PaymentSystems.Domain.Accounts {
 
             Apply(
                 new TransactionInitiated(
-                    State.Id.Value,
-                    transactionId.Value,
+                    State.Id,
+                    transactionId,
                     State.AvailableBalance - amount,
-                    amount,
-                    initiateAt
-
+                    amount
                 )
             );
         }
 
-        public void BookTransaction(TransactionId transactionId, DateTimeOffset bookedAt) {
+        public void BookTransaction(TransactionId transactionId) {
             var transaction = State.PendingTransactions.FindTransaction(transactionId);
             if (transaction == default) throw new Exception("Transaction unknown");
 
@@ -42,15 +40,14 @@ namespace PaymentSystems.Domain.Accounts {
 
             Apply(
                 new TransactionBooked(
-                    State.Id.Value,
-                    transactionId.Value,
-                    State.AccountBalance - transaction.Amount, 
-                    bookedAt
+                    State.Id,
+                    transactionId,
+                    State.AccountBalance - transaction.Amount
                 )
             );
         }
 
-        public void CancelTransaction(TransactionId transactionId, string reason, DateTimeOffset cancelledAt) {
+        public void CancelTransaction(TransactionId transactionId, string reason) {
             // if (State.InitiatedTransactions.HasTransaction(transactionId)) return;
 
             var transaction = State.PendingTransactions.FindTransaction(transactionId);
@@ -59,11 +56,11 @@ namespace PaymentSystems.Domain.Accounts {
 
             Apply(
                 new TransactionCancelled(
-                    State.Id.Value,
-                    transactionId.Value,
+                    State.Id,
+                    transactionId,
                     State.AvailableBalance + transaction.Amount,
-                    reason,
-                    cancelledAt)
+                    reason
+                )
             );
         }
 
@@ -71,6 +68,7 @@ namespace PaymentSystems.Domain.Accounts {
             return State.AvailableBalance - payment.State.Amount >= 0;
         }
 
+        /*
         public override AccountState When(object evt) {
             return evt switch {
                 AccountOpened e =>
@@ -85,5 +83,6 @@ namespace PaymentSystems.Domain.Accounts {
                 _                      => State
             };
         }
+        */
     }
 }

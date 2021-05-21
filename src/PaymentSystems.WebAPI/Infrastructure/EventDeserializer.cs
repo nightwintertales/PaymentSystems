@@ -1,6 +1,6 @@
 using System.Text.Json;
 using EventStore.Client;
-using PaymentSystems.FrameWork;
+using Eventuous;
 
 namespace PaymentSystems.WebAPI.Infrastructure {
     public static class EventDeserializer {

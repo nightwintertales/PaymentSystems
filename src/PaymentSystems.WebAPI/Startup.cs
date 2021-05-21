@@ -1,24 +1,18 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using EventStore.Client;
-using MassTransit;
+using Eventuous;
+using Eventuous.Subscriptions;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using MongoDB.Driver;
-using PaymentSystems.FrameWork;
 using PaymentSystems.WebAPI.Application;
-using PaymentSystems.WebAPI.Consumers;
 using PaymentSystems.WebAPI.Features;
 using PaymentSystems.WebAPI.Infrastructure;
+using PaymentSystems.WebAPI.Infrastructure.MongoDb;
 
 namespace PaymentSystems.WebAPI
 {
@@ -49,6 +43,7 @@ namespace PaymentSystems.WebAPI
 
             services.AddSingleton<IAggregateStore, EsDbAggregateStore>();
 
+            services.AddSingleton<ICheckpointStore, MongoCheckpointStore>();
             // Application
             //BookingEventMappings.MapEvents();
             
@@ -59,9 +54,8 @@ namespace PaymentSystems.WebAPI
 
             //Reactors
             services.AddHostedService<AccountReactorSubscription>();
-            services.AddHostedService<IntegrationReactorSubscription>();
+           // services.AddHostedService<IntegrationReactorSubscription>();
             services.AddHostedService<TransactionReactorSubscription>();
-            services.AddHostedService<AccountsIntegrationSubscription>();
             
             //Projections
             services.AddHostedService<AccountProjectionSubscription>();
@@ -69,15 +63,6 @@ namespace PaymentSystems.WebAPI
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "PaymentSystems.WebAPI", Version = "v1" });
-            });
-
-            var busControl = Bus.Factory.CreateUsingRabbitMq(cfg =>
-            {
-                cfg.ReceiveEndpoint("integration-service", e =>
-                {
-                    e.Consumer(() => new PaymentApprovedConsumer());
-                    e.Consumer(() => new AccountTransactionsConsumer());
-                });
             });
         }
 

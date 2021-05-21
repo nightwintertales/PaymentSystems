@@ -1,9 +1,9 @@
-using PaymentSystems.FrameWork;
+using Eventuous;
 using PaymentSystems.Domain;
 using PaymentSystems.Contract;
 using PaymentSystems.Domain.Payments;
 using PaymentSystems.Domain.Accounts;
-using System.Threading.Tasks;
+using PaymentSystems.FrameWork;
 
 namespace PaymentSystems.WebAPI.Application {
     public class PaymentCommandService : CommandService<Payment, PaymentId, PaymentState> {
@@ -33,12 +33,10 @@ namespace PaymentSystems.WebAPI.Application {
                 cmd => new PaymentId(cmd.PaymentId),
                 async (payment, cmd) =>
                 {
-                    var account = await Store.Load<Account, AccountId, AccountState>(new AccountId(cmd.AccountId), default);
+                    var account = await Store.Load<Account>(new AccountId(cmd.AccountId), default);
                     payment.ExecutePayment(account);
                 }
             );
         }
-
-       // public async Task<Payment> GetPaymentByAccountId(string accountId) => await Store.Load<Payment, PaymentId,PaymentState>(new AccountId(accountId), default);
     }
 }

@@ -6,11 +6,13 @@ using static PaymentSystems.Contract.AccountCommands;
 
 namespace PaymentSystems.WebAPI.Features.Accounts
 {
-    public class AccountsAPI
+    [ApiController]
+    [Route("/payments")]
+    public class AccountsAPI : ControllerBase
     {
-        private readonly PaymentCommandService _service;
+        private readonly AccountCommandService _service;
 
-        public AccountsAPI(PaymentCommandService service) => _service = service;
+        public AccountsAPI(AccountCommandService service) => _service = service;
     
 
         [HttpPost]

@@ -39,8 +39,5 @@ services:
 
 networks:
   default:
-<<<<<<< HEAD
     name: gl-network
-=======
-    name: bank-network
->>>>>>> 8f9c3b30cd9865f89985ef9721fd5d09e5e8fde6
+

@@ -1,26 +1,27 @@
 using System;
-using PaymentSystems.FrameWork;
+using Eventuous;
 using PaymentSystems.Domain.Accounts;
 using static PaymentSystems.Domain.Events.PaymentEvents.V1;
 using static PaymentSystems.Domain.Shared.Shared;
 
 namespace PaymentSystems.Domain.Payments {
     //Consider Payment Status that changes with different events
-    public class Payment : Aggregate<PaymentId, PaymentState> {
-        public Payment() => State = new PaymentState();
+    public class Payment : Aggregate<PaymentState, PaymentId> {
+       // public Payment() => State = new PaymentState();
 
         public void SubmitPayment(AccountId accountId, PaymentId paymentId, Payee payee, decimal amount) {
             Apply(
                 new PaymentSubmitted()
                 {
-                    AccountId = accountId.Value,
+                    AccountId = accountId,
                     Amount = amount,
-                    PaymentId = paymentId.Value,
+                   // PaymentId = paymentId.Value,
                     Payee = new V1.CounterParty(
                         payee.Name,
                         new V1.DomesticAccountDetails(payee.Account.SortCode, payee.Account.AccountNumber)
                     )
                 }
+                
             );
         }
 
@@ -30,7 +31,7 @@ namespace PaymentSystems.Domain.Payments {
             Apply(
                 new PaymentApproved
                 {
-                    PaymentId = State.PaymentId,
+                 //   PaymentId = State.PaymentId,
                     ApprovedBy = approvedBy,
                     ApprovedAt = approvedAt
                 }
@@ -38,7 +39,7 @@ namespace PaymentSystems.Domain.Payments {
         }
 
         public void ExecutePayment(Account account) {
-            if (State.Status == PaymentStatus.Executed) return;
+         //   if (State.Status == PaymentStatus.Executed) return;
 
             if (State.Status != PaymentStatus.Approved)
                 throw new Exception("It's not approved");
@@ -48,7 +49,7 @@ namespace PaymentSystems.Domain.Payments {
             else
                 Apply(new PaymentExecuted {PaymentId = State.PaymentId});
         }
-
+/*
         public override PaymentState When(object evt)
             => evt switch
             {
@@ -64,5 +65,7 @@ namespace PaymentSystems.Domain.Payments {
                 PaymentExecuted => State = State with {Status = PaymentStatus.Executed},
                 _ => State
             };
+            
+            */
     }
 }

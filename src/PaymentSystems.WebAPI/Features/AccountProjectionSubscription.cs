@@ -1,9 +1,8 @@
-using System.Collections.Generic;
 using EventStore.Client;
+using Eventuous.Subscriptions;
 using MongoDB.Driver;
-using PaymentSystems.FrameWork.Projections;
 using PaymentSystems.WebAPI.Features.Accounts;
-using PaymentSystems.WebAPI.Infrastructure;
+using SubscriptionService = PaymentSystems.WebAPI.Infrastructure.SubscriptionService;
 
 namespace PaymentSystems.WebAPI.Features {
     public class AccountProjectionSubscription : SubscriptionService {
