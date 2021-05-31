@@ -1,5 +1,9 @@
+
+using System.Text.Json;
 using EventStore.Client;
 using Eventuous;
+using Eventuous.EventStoreDB;
+using Eventuous.Projections.MongoDB;
 using Eventuous.Subscriptions;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -13,8 +17,7 @@ using PaymentSystems.WebAPI.Application;
 using PaymentSystems.WebAPI.Features;
 using PaymentSystems.WebAPI.Features.Accounts;
 using PaymentSystems.WebAPI.Features.Payments;
-using PaymentSystems.WebAPI.Infrastructure;
-using PaymentSystems.WebAPI.Infrastructure.MongoDb;
+using PaymentSystems.WebAPI.Integration;
 
 namespace PaymentSystems.WebAPI
 {
@@ -43,7 +46,19 @@ namespace PaymentSystems.WebAPI
                     )
             );
 
-            services.AddSingleton<IAggregateStore, EsDbAggregateStore>();
+            services.AddSingleton(new EventStoreClient(
+                EventStoreClientSettings.Create(Configuration["EventStore:ConnectionString"])
+            ));
+            services.AddSingleton<IEventSerializer>(
+                new DefaultEventSerializer(
+                    new JsonSerializerOptions(JsonSerializerDefaults.Web)
+                )
+            );
+     
+            
+            services.AddSingleton<IAggregateStore, AggregateStore>();
+            services.AddSingleton<IEventStore, EsdbEventStore>();
+
 
             services.AddSingleton<ICheckpointStore, MongoCheckpointStore>();
             // Application
@@ -56,7 +71,7 @@ namespace PaymentSystems.WebAPI
 
             //Reactors
             services.AddHostedService<AccountReactorSubscription>();
-           // services.AddHostedService<IntegrationReactorSubscription>();
+            //services.AddHostedService<IntegrationReactorSubscription>();
             services.AddHostedService<TransactionReactorSubscription>();
             
             //Projections

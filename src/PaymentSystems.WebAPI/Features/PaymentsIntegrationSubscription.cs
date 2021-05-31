@@ -1,17 +1,15 @@
-﻿using System;
+﻿
+
+/*using System;
 using System.Reflection.Metadata;
 using System.Threading;
 using System.Threading.Tasks;
 using EventStore.Client;
 using Eventuous;
 using Eventuous.Subscriptions;
-using MassTransit;
 using PaymentSystems.Domain.Payments;
-using PaymentSystems.FrameWork;
-using PaymentSystems.FrameWork.Projections;
 using PaymentSystems.WebAPI.Integration.Payments;
 using static PaymentSystems.Domain.Events.PaymentEvents;
-using SubscriptionService = PaymentSystems.WebAPI.Infrastructure.SubscriptionService;
 
 namespace PaymentSystems.WebAPI.Features {
     public class PaymentsIntegrationSubscription : SubscriptionService {
@@ -65,5 +63,16 @@ namespace PaymentSystems.WebAPI.Features {
                 }
             }
         }
+
+        protected override Task<EventSubscription> Subscribe(Checkpoint checkpoint, CancellationToken cancellationToken)
+        {
+            throw new NotImplementedException();
+        }
+
+        protected override Task<EventPosition> GetLastEventPosition(CancellationToken cancellationToken)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
+*/

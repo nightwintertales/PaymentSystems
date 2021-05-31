@@ -2,33 +2,33 @@ using System.Threading;
 using System.Threading.Tasks;
 using EventStore.Client;
 using Eventuous.Subscriptions;
+using Eventuous.Subscriptions.EventStoreDB;
 using PaymentSystems.WebAPI.Application;
 using static PaymentSystems.Contract.AccountCommands;
 using static PaymentSystems.Domain.Transactions.TransactionEvents;
-using SubscriptionService = PaymentSystems.WebAPI.Infrastructure.SubscriptionService;
 
 namespace PaymentSystems.WebAPI.Features
 {
-    public class  TransactionReactorSubscription : SubscriptionService {
+    public class  TransactionReactorSubscription : AllStreamSubscription {
         const string SubscriptionName = "TransactionReactors";
 
         public TransactionReactorSubscription(
             EventStoreClient      eventStoreClient,
             ICheckpointStore      checkpointStore,
-            AccountCommandService commandService
+            TransactionsCommandService commandService
         ) : base(
             eventStoreClient,
-            checkpointStore,
             SubscriptionName,
+            checkpointStore,
             new[] {new TransactionEventHandler(commandService)}
         ) { }
 
         class TransactionEventHandler : IEventHandler {
-            readonly AccountCommandService _commandService;
+            readonly TransactionsCommandService _commandService;
 
             public string SubscriptionGroup => SubscriptionName;
 
-            public TransactionEventHandler(AccountCommandService commandService) {
+            public TransactionEventHandler(TransactionsCommandService commandService) {
                 _commandService = commandService;
             }
 

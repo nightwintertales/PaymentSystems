@@ -10,7 +10,8 @@ namespace PaymentSystem.PaymentProcessing.Modules.PendingPayments {
         public PaymentIntegration(IMongoDatabase database, ILoggerFactory loggerFactory)
             : base(
                 database,
-                AccountProjectionSubscription.SubscriptionGroup,
+                "",
+                //AccountProjectionSubscription.SubscriptionGroup,
                 loggerFactory
             ) { }
 

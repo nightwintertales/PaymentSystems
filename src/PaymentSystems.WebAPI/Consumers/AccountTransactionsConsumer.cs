@@ -1,4 +1,5 @@
-﻿using MassTransit;
+﻿
+/*
 using System;
 using System.Threading.Tasks;
 using static PaymentSystems.Domain.Accounts.AccountEvents.V1;
@@ -37,3 +38,5 @@ namespace PaymentSystems.WebAPI.Consumers
         // 2. Remove just like for Booked
     }
 }
+
+*/

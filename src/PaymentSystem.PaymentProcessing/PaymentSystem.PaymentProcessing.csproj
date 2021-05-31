@@ -5,10 +5,10 @@
     </PropertyGroup>
     
     <ItemGroup>
-        <PackageReference Include="Eventuous.EventStoreDB" Version="0.4.1" />
-        <PackageReference Include="Eventuous.Producers" Version="0.4.1" />
-        <PackageReference Include="Eventuous.Projections.MongoDB" Version="0.4.1" />
-        <PackageReference Include="Eventuous.Subscriptions.EventStoreDB" Version="0.4.1" />
+        <PackageReference Include="Eventuous.EventStoreDB" Version="0.4.4" />
+        <PackageReference Include="Eventuous.Producers" Version="0.4.4" />
+        <PackageReference Include="Eventuous.Projections.MongoDB" Version="0.4.4" />
+        <PackageReference Include="Eventuous.Subscriptions.EventStoreDB" Version="0.4.4" />
     </ItemGroup>
     
     <ItemGroup>
